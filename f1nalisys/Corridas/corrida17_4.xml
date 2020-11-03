@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="/schemas/mrd-1.4.xsl"?>
+<MRData xmlns="http://ergast.com/mrd/1.4" series="f1" url="http://ergast.com/api/f1/2017/4" limit="30" offset="0" total="1">
+	<RaceTable season="2017" round="4">
+		<Race season="2017" round="4" url="https://en.wikipedia.org/wiki/2017_Russian_Grand_Prix">
+			<RaceName>Russian Grand Prix</RaceName>
+			<Circuit circuitId="sochi" url="http://en.wikipedia.org/wiki/Sochi_Autodrom">
+				<CircuitName>Sochi Autodrom</CircuitName>
+				<Location lat="43.4057" long="39.9578">
+					<Locality>Sochi</Locality>
+					<Country>Russia</Country>
+				</Location>
+			</Circuit>
+			<Date>2017-04-30</Date>
+			<Time>12:00:00Z</Time>
+		</Race>
+	</RaceTable>
+</MRData>
