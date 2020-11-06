@@ -10,3 +10,8 @@ def home(request):
 
 def about(request):
     return render(request, 'about.html', {'title': 'About'})
+
+
+def index(request):
+    tparams = {}
+    return render(request, 'index.html', tparams)
