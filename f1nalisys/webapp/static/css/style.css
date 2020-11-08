@@ -560,9 +560,12 @@ a:hover {
 .navbar-b .dropdown-btn.show .dropdown-menu {
   transform: translate3d(0px, 0px, 0px);
   visibility: visible !important;
+  list-style-type: none; !important;
 }
 
 .navbar-b .dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto;
   margin: 1.12rem 0 0;
   border-radius: 0;
 }
