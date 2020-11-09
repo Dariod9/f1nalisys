@@ -19,8 +19,8 @@ UPDATEVERSION = 9.4.4
 VIEWS = V H editor folder map plot - H text info table tree explore - - 
 GUISIZE0 = 1004
 GUISIZE1 = 748
-GUILOC0 = 12
-GUILOC1 = 12
+GUILOC0 = 432
+GUILOC1 = 68
 MAXSTATE = false
 SHOWBUTTONS = true
 SHOWINPUT = true
@@ -62,7 +62,7 @@ SHOWHIDDEN = false
 SEARCHMODE = 0
 FILTERRT = false
 EXECRT = false
-DBNAME = 
+DBNAME = basex
 LASTINSERT = 1
 
 # Visualizations

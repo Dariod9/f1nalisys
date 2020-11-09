@@ -1,8 +1,8 @@
 # General Options
 DEBUG = false
-DBPATH = C:\Users\DarioMatos\Desktop\EDC\f1nalisys\f1nalisys\webapp\BaseX944\basex\data
+DBPATH = \data
 LOGPATH = .logs
-REPOPATH = C:\Users\DarioMatos\Desktop\EDC\f1nalisys\f1nalisys\webapp\BaseX944\basex\repo
+REPOPATH = \repo
 LANG = English
 LANGKEYS = false
 FAIRLOCK = false
@@ -28,7 +28,7 @@ LOGMSGMAXLEN = 1000
 LOGTRACE = true
 
 # HTTP Services
-WEBPATH = C:\Users\DarioMatos\Desktop\EDC\f1nalisys\f1nalisys\webapp\BaseX944\basex\webapp
+WEBPATH = \webapp
 GZIP = false
 RESTPATH = 
 RESTXQPATH = 

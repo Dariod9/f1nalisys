@@ -23,22 +23,21 @@ def about(request):
 
 
 def index(request):
-    # Não esquecer de ligar o BaseXServer e o BaseXClient antes de correr estas funções, senão não liga à BD
-    #try:
-    #session.execute("open formula1")
-    #except IOError:
-     #   session.execute("create db formula1")
+    #Não esquecer de ligar o BaseXServer e o BaseXClient antes de correr estas funções, senão não liga à BD
+    try:
+        session.execute("open for1")
+    except IOError:
+        session.execute("create db for1")
 
-        # populate db from api
-        #session.execute("open formula1")
+        session.execute("open formula1")
 
-    #print(session.info())
-    # add document
-    #root = etree.parse("webapp/Corridas/2018/2018_constructors.xml")
-    #print(root)
+    print(session.info())
+    #add document
+    root = etree.parse("webapp/Corridas/2018/2018_constructors.xml")
+    print(root)
 
-    #session.add("Cons2018", etree.tostring(root).decode("iso-8859-1"))
-    #print(session.info())
-    #session.close()
+    session.add("Cons2018", etree.tostring(root).decode("iso-8859-1"))
+    print(session.info())
+    session.close()
     tparams = {}
     return render(request, 'index.html', tparams)
