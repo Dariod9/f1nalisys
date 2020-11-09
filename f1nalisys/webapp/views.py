@@ -1,3 +1,4 @@
+import xmltodict
 from BaseXClient import BaseXClient
 from django.shortcuts import render
 from lxml import etree
@@ -23,21 +24,33 @@ def about(request):
 
 
 def index(request):
-    #Não esquecer de ligar o BaseXServer e o BaseXClient antes de correr estas funções, senão não liga à BD
-    try:
-        session.execute("open for1")
-    except IOError:
-        session.execute("create db for1")
+    # #Não esquecer de ligar o BaseXServer e o BaseXClient antes de correr estas funções, senão não liga à BD
+    # try:
+    #     session.execute("open for2")
+    #     print(session.info())
+    # except IOError:
+    #     session.execute("create db for2")
+    #     print(session.info()+"AHASUOD")
 
-        session.execute("open formula1")
-
+    session.execute("open for2")
     print(session.info())
+
     #add document
-    root = etree.parse("webapp/Corridas/2018/2018_constructors.xml")
-    print(root)
+    root = etree.parse("webapp/Corridas/2018/2018_drivers.xml")
+    #print(root)
 
     session.add("Cons2018", etree.tostring(root).decode("iso-8859-1"))
-    print(session.info())
-    session.close()
+    #print(session.info())
+    #session.close()
+
+    #session.execute("open cTeste (basex/data)")
+    input = "xquery <root>{ for $a in collection('for2') return <elem> {$a} </elem>} </root>"
+    query = session.execute(input)
+    #
+    #root = etree.parse("app/cursos.xml")
+    #info = dict()
+    res = xmltodict.parse(query)
+    print(res)
     tparams = {}
+
     return render(request, 'index.html', tparams)
