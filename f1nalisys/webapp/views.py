@@ -6,8 +6,28 @@ from lxml import etree
 session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
 # Create your views here.
 
-def home(request):
 
+def teams(request):
+    query = "xquery <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root>"
+    exe = session.execute(query)
+    #print("exe:\n", exe)
+
+    output = xmltodict.parse(exe)
+    print("out: ", output)
+
+    info = dict()
+    for t in output['root']['elem']:
+        info[t['Name']] = t['Nationality']
+
+    tparams = {
+        'title': 'Teams',
+        'teams': info,
+    }
+
+    return render(request, 'teams.html', tparams)
+
+
+def home(request):
     # #Não esquecer de ligar o BaseXServer e o BaseXClient antes de correr estas funções, senão não liga à BD
     # session.execute("open f1")
     # # add document
@@ -32,25 +52,25 @@ def index(request):
     #     session.execute("create db for2")
     #     print(session.info()+"AHASUOD")
 
-    session.execute("open for2")
-    print(session.info())
+    # session.execute("open for2")
+    # print(session.info())
 
-    #add document
-    root = etree.parse("webapp/Corridas/2018/2018_drivers.xml")
-    #print(root)
-
-    session.add("Cons2018", etree.tostring(root).decode("iso-8859-1"))
-    #print(session.info())
-    #session.close()
-
-    #session.execute("open cTeste (basex/data)")
-    input = "xquery <root>{ for $a in collection('for2') return <elem> {$a} </elem>} </root>"
-    query = session.execute(input)
+    # #add document
+    # root = etree.parse("webapp/Corridas/2018/2018_drivers.xml")
+    # #print(root)
     #
-    #root = etree.parse("app/cursos.xml")
-    #info = dict()
-    res = xmltodict.parse(query)
-    print(res)
+    # session.add("Cons2018", etree.tostring(root).decode("iso-8859-1"))
+    # #print(session.info())
+    # #session.close()
+    #
+    # #session.execute("open cTeste (basex/data)")
+    # input = "xquery <root>{ for $a in collection('for2') return <elem> {$a} </elem>} </root>"
+    # query = session.execute(input)
+    # #
+    # #root = etree.parse("app/cursos.xml")
+    # #info = dict()
+    # res = xmltodict.parse(query)
+    # print(res)
     tparams = {}
 
     return render(request, 'index.html', tparams)
