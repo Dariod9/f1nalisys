@@ -9,4 +9,4 @@ REM Options for virtual machine
 set BASEX_JVM=-Xmx1200m %BASEX_JVM%
 
 REM Run code
-java -cp "%CP%" %BASEX_JVM% org.basex.BaseXServer %*
+java -cp "%CP%" %BASEX_JVM% org.basex.BaseX %*
