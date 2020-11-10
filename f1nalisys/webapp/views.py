@@ -7,7 +7,7 @@ session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
 # Create your views here.
 
 
-def teams(request):
+def teams2(request):
     query = "xquery <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root> "
     # dá erro: nao encontra o local. Não sei em que pasta guardar os queries com as funçoes para chamar aqui
     # query = "xquery <root>{ local:get-constructors() }</root>"
@@ -29,7 +29,7 @@ def teams(request):
 
 
 # tentativa de transformação
-def teams2(request):
+def teams(request):
     query = "xquery for $c in collection('f1')//ConstructorTable return $c"
     exe = session.execute(query)
     print(exe)
