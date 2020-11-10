@@ -8,9 +8,10 @@ session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
 
 
 def teams(request):
-    query = "xquery <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root>"
+    query = "xquery <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root> "
+    # dá erro: nao encontra o local. Não sei em que pasta guardar os queries com as funçoes para chamar aqui
+    # query = "xquery <root>{ local:get-constructors() }</root>"
     exe = session.execute(query)
-    #print("exe:\n", exe)
 
     output = xmltodict.parse(exe)
     print("out: ", output)
@@ -25,6 +26,45 @@ def teams(request):
     }
 
     return render(request, 'teams.html', tparams)
+
+
+# tentativa de transformação
+def teams2(request):
+    query = "xquery for $c in collection('f1')//ConstructorTable return $c"
+    exe = session.execute(query)
+    print(exe)
+    root = etree.fromstring(exe)
+
+    xsl_file = etree.parse('webapp/xsl_files/teams.xsl')
+    tranform = etree.XSLT(xsl_file)
+    html = tranform(root)
+
+    tparams = {
+        'html': html
+    }
+    return render(request, 'teams.html', tparams)
+
+
+def drivers(request):
+    query = "xquery for $p in collection('f1')//DriverTable return $p"
+    exe = session.execute(query)
+
+    output = xmltodict.parse(exe)
+    print("out: ", output)
+
+    info = dict()
+    for t in output['DriverTable']['Driver']:
+        info[t['PermanentNumber']] = dict()
+        info[t['PermanentNumber']]['name'] = t['GivenName'] + t['FamilyName']
+        info[t['PermanentNumber']]['date'] = t['DateOfBirth']
+        info[t['PermanentNumber']]['nation'] = t['Nationality']
+
+    tparams = {
+        'title': 'pilots',
+        'drivers': info,
+    }
+
+    return render(request, 'drivers.html', tparams)
 
 
 def home(request):

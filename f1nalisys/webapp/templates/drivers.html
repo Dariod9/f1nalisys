@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Teams</h1>
+    <h1>Drivers</h1>
+
     <div class="row row-cols-1 row-cols-md-2">
-    {% for c, n in teams.items %}
+    {% for c, n in drivers.items %}
         <div class="col mb-4">
             <div class="card">
               <div class="card-body">
@@ -13,6 +14,4 @@
         </div>
     {% endfor %}
     </div>
-
-{#    {{ html | safe }}#}
 {% endblock %}
