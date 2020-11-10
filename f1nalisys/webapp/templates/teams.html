@@ -2,12 +2,12 @@
 {% block content %}
     <h1>Teams</h1>
     <div class="row row-cols-1 row-cols-md-2">
-    {% for c, n in teams.items %}
+    {% for name, natio in teams.items %}
         <div class="col mb-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title"> {{ c }}</h5>
-                <p class="card-text"> {{ n }}</p>
+                <h5 class="card-title"> {{ name }}</h5>
+                <p class="card-text"> {{ natio }}</p>
               </div>
             </div>
         </div>

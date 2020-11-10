@@ -8,17 +8,17 @@ session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
 
 
 def teams(request):
-    #query = "xquery <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root> "
+    query = "xquery <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root> "
     # dá erro: nao encontra o local. Não sei em que pasta guardar os queries com as funçoes para chamar aqui
     # query = "xquery <root>{ local:get-constructors() }</root>"
-    #exe = session.execute(query)
+    exe = session.execute(query)
 
-    #output = xmltodict.parse(exe)
-    #print("out: ", output)
+    output = xmltodict.parse(exe)
+    print("out: ", output)
 
     info = dict()
-    #for t in output['root']['elem']:
-    #    info[t['Name']] = t['Nationality']
+    for t in output['root']['elem']:
+        info[t['Name']] = t['Nationality']
 
     tparams = {
         'title': 'Teams',
@@ -46,37 +46,25 @@ def teams2(request):
 
 
 def drivers(request):
-    #query = "xquery for $p in collection('f1')//DriverTable return $p"
-    #exe = session.execute(query)
+    query = "xquery for $p in collection('f1')//DriverTable return $p"
+    exe = session.execute(query)
 
-    #output = xmltodict.parse(exe)
-    #print("out: ", output)
+    output = xmltodict.parse(exe)
+    print("out: ", output)
 
     info = dict()
-    #for t in output['DriverTable']['Driver']:
-    #    info[t['PermanentNumber']] = dict()
-    #    info[t['PermanentNumber']]['name'] = t['GivenName'] + t['FamilyName']
-    #    info[t['PermanentNumber']]['date'] = t['DateOfBirth']
-    #    info[t['PermanentNumber']]['nation'] = t['Nationality']
+    for t in output['DriverTable']['Driver']:
+        info[t['PermanentNumber']] = dict()
+        info[t['PermanentNumber']]['name'] = t['GivenName'] + ' ' + t['FamilyName']
+        info[t['PermanentNumber']]['date'] = t['DateOfBirth']
+        info[t['PermanentNumber']]['nation'] = t['Nationality']
 
     tparams = {
-        'title': 'pilots',
+        'title': 'drivers',
         'drivers': info,
     }
 
     return render(request, 'drivers.html', tparams)
-
-
-def home(request):
-    # #Não esquecer de ligar o BaseXServer e o BaseXClient antes de correr estas funções, senão não liga à BD
-    # session.execute("open f1")
-    # # add document
-    # root = etree.parse("webapp/Corridas/2018/2018_drivers.xml")
-    #
-    # session.add("CORRIDAS", etree.tostring(root).decode("utf-8"))
-    # print(session.info())
-    tparams = {}
-    return render(request, 'home.html', tparams)
 
 
 def about(request):
