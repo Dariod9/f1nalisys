@@ -22,7 +22,6 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('about/', views.about, name="about"),
     path('<int:ano>', views.ano),
-    path('home/', views.home, name="home"),
     path('teams', views.teams, name="teams"),
     path('drivers/', views.drivers, name="drivers"),
 ]

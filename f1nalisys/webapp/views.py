@@ -70,8 +70,9 @@ def drivers(request):
 def about(request):
     return render(request, 'about.html', {'title': 'About'})
 
+
 def ano(request, ano):
-    input ="xquery <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>"
+    input ="xquery <root>{ for $a in collection('f1')//Race where $a/@season = " + str(ano) + " return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>"
     query = session.execute(input)
 
     info = dict()
@@ -82,15 +83,7 @@ def ano(request, ano):
         info[c["RaceName"]]["Circuit"] = c["Circuit"]["CircuitName"]
         info[c["RaceName"]]["Location"] = c["Circuit"]["Location"]["Locality"]+", "+c["Circuit"]["Location"]["Country"]
 
-
-
-    # for c in res["root"]["elem"]:
-    #     print(c["Circuit"])
-    #        # print("@circuitId :"+a["@circuitId"])
-    #        # print("@url :"+a["@url"])
-           # for b in a["Location"]:
-             #   print("Locality:" + b["Locality"])
-             #   print("Country:" + b["Country"])
+    print(info)
 
     tparams= {
         "ano" : ano,
