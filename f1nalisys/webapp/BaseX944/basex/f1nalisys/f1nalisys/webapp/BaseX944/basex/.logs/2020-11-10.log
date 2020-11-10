@@ -1,0 +1,7 @@
+00:18:53.351	127.0.0.1:57126	admin	REQUEST	XQUERY <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root>	0.95 ms
+00:18:53.355	127.0.0.1:57126	admin	ERROR	Stopped at ., 1/28: [FODC0002] Resource '/Users/ruisantos/Desktop/ano4/edc/project/f1nalisys/f1nalisys/webapp/BaseX944/basex/f1' does not exist.	3.91 ms
+01:23:13.562	127.0.0.1:57422	admin	REQUEST	XQUERY <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root>	1.23 ms
+01:23:13.564	127.0.0.1:57422	admin	ERROR	Stopped at ., 1/28: [FODC0002] Resource '/Users/ruisantos/Desktop/ano4/edc/project/f1nalisys/f1nalisys/webapp/BaseX944/basex/f1' does not exist.	2.46 ms
+01:39:15.917	127.0.0.1:57422	admin	REQUEST	XQUERY <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root>	0.79 ms
+01:39:15.921	127.0.0.1:57422	admin	ERROR	Stopped at ., 1/28: [FODC0002] Resource '/Users/ruisantos/Desktop/ano4/edc/project/f1nalisys/f1nalisys/webapp/BaseX944/basex/f1' does not exist.	4.67 ms
+02:06:55.880	SERVER	admin	OK	Server was stopped (port: 1984).

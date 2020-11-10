@@ -1,0 +1,5 @@
+23:43:24.067	SERVER	admin	OK	Server was started (port: 1984).
+23:43:46.999	127.0.0.1:56987	admin	REQUEST	XQUERY <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root>	31.95 ms
+23:43:47.397	127.0.0.1:56987	admin	ERROR	Stopped at ., 1/28: [FODC0002] Resource '/Users/ruisantos/Desktop/ano4/edc/project/f1nalisys/f1nalisys/webapp/BaseX944/basex/f1' does not exist.	398.4 ms
+23:44:34.851	127.0.0.1:56987	admin	REQUEST	XQUERY <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root>	2.31 ms
+23:44:34.853	127.0.0.1:56987	admin	ERROR	Stopped at ., 1/28: [FODC0002] Resource '/Users/ruisantos/Desktop/ano4/edc/project/f1nalisys/f1nalisys/webapp/BaseX944/basex/f1' does not exist.	2.02 ms
