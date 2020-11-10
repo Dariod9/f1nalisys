@@ -46,7 +46,7 @@ def teams2(request):
 
 
 def drivers(request):
-    query = "xquery for $p in collection('f1')//DriverTable return $p"
+    query = "xquery for $p in collection('f1')//DriverTable where $p/@season=2019 return $p"
     exe = session.execute(query)
 
     output = xmltodict.parse(exe)

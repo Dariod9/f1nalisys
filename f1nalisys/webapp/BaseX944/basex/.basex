@@ -1,8 +1,8 @@
 # General Options
 DEBUG = false
-DBPATH = f1nalisys\f1nalisys\webapp\BaseX944\basex\data
+DBPATH = C:\Users\DarioMatos\Desktop\EDC\BaseX944\basex\data
 LOGPATH = .logs
-REPOPATH = f1nalisys\f1nalisys\webapp\BaseX944\basex\repo
+REPOPATH = C:\Users\DarioMatos\Desktop\EDC\BaseX944\basex\repo
 LANG = English
 LANGKEYS = false
 FAIRLOCK = false

@@ -9,8 +9,11 @@ def main(ano):
         anoDef= int(ano[-2:])
     
     
-    path="C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/Corridas/20"+str(anoDef)
+    path="C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/Corridas/20"+str(anoDef)
+        
+
     os.mkdir(path)
+   
 
     response = requests.get("http://ergast.com/api/f1/20"+str(anoDef)+"/0", verify=False)
     f = open(path+"/20"+str(anoDef)+"_0.xml", "x")
@@ -27,10 +30,6 @@ def main(ano):
     resposta= change(response.text)
     f.write(resposta)
 
-    response = requests.get("http://ergast.com/api/f1/20"+str(anoDef)+"/results", verify=False)
-    f = open(path+"/20"+str(anoDef)+"_results.xml", "x")
-    resposta= change(response.text)
-    f.write(resposta)
 
 
 def change(stringz):
