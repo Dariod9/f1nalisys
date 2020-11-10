@@ -82,6 +82,35 @@ def home(request):
 def about(request):
     return render(request, 'about.html', {'title': 'About'})
 
+def ano(request, ano):
+    input ="xquery <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>"
+    query = session.execute(input)
+
+    info = dict()
+    # print(query)
+    res = xmltodict.parse(query)
+    for c in res["root"]["elem"]:
+        info[c["RaceName"]] = dict()
+        info[c["RaceName"]]["Circuit"] = c["Circuit"]["CircuitName"]
+        info[c["RaceName"]]["Location"] = c["Circuit"]["Location"]["Locality"]+", "+c["Circuit"]["Location"]["Country"]
+
+
+
+    # for c in res["root"]["elem"]:
+    #     print(c["Circuit"])
+    #        # print("@circuitId :"+a["@circuitId"])
+    #        # print("@url :"+a["@url"])
+           # for b in a["Location"]:
+             #   print("Locality:" + b["Locality"])
+             #   print("Country:" + b["Country"])
+
+    tparams= {
+        "ano" : ano,
+        "data": info
+    }
+    # print(res["root"]["elem"])
+    return render(request, 'ano.html', tparams)
+
 
 def index(request):
     # #Não esquecer de ligar o BaseXServer e o BaseXClient antes de correr estas funções, senão não liga à BD

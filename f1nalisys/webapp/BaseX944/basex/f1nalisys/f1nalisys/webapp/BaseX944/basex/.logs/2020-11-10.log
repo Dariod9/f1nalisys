@@ -5,3 +5,70 @@
 01:39:15.917	127.0.0.1:57422	admin	REQUEST	XQUERY <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root>	0.79 ms
 01:39:15.921	127.0.0.1:57422	admin	ERROR	Stopped at ., 1/28: [FODC0002] Resource '/Users/ruisantos/Desktop/ano4/edc/project/f1nalisys/f1nalisys/webapp/BaseX944/basex/f1' does not exist.	4.67 ms
 02:06:55.880	SERVER	admin	OK	Server was stopped (port: 1984).
+15:20:00.765	SERVER	admin	OK	Server was started (port: 1984).
+15:56:53.331	127.0.0.1:53393	admin	REQUEST	XQUERY for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country}</elem>	19.88 ms
+15:56:53.805	127.0.0.1:53393	admin	OK	Query executed in 467.2 ms.	474.27 ms
+15:59:55.336	127.0.0.1:53403	admin	REQUEST	XQUERY for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country}</elem>	0.54 ms
+15:59:55.349	127.0.0.1:53403	admin	OK	Query executed in 12.83 ms.	13.31 ms
+16:02:51.617	127.0.0.1:53426	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country}</elem> </root>	0.6 ms
+16:02:51.621	127.0.0.1:53426	admin	ERROR	Stopped at ., 1/142: [XPST0003] Expecting '}', found '>'.	4.19 ms
+16:03:30.091	127.0.0.1:53432	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.43 ms
+16:03:30.106	127.0.0.1:53432	admin	OK	Query executed in 14.29 ms.	14.82 ms
+16:04:17.899	127.0.0.1:53438	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.43 ms
+16:04:17.910	127.0.0.1:53438	admin	OK	Query executed in 10.77 ms.	11.2 ms
+16:08:48.340	127.0.0.1:53452	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.45 ms
+16:08:48.351	127.0.0.1:53452	admin	OK	Query executed in 11.12 ms.	11.63 ms
+16:10:51.346	127.0.0.1:53458	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.43 ms
+16:10:51.355	127.0.0.1:53458	admin	OK	Query executed in 9.07 ms.	9.58 ms
+16:11:38.493	127.0.0.1:53463	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.45 ms
+16:11:38.513	127.0.0.1:53463	admin	OK	Query executed in 19.59 ms.	20.19 ms
+16:12:08.301	127.0.0.1:53478	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.39 ms
+16:12:08.310	127.0.0.1:53478	admin	OK	Query executed in 9.13 ms.	9.68 ms
+16:12:50.434	127.0.0.1:53487	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.45 ms
+16:12:50.445	127.0.0.1:53487	admin	OK	Query executed in 7.31 ms.	10.87 ms
+16:13:04.948	127.0.0.1:53492	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.33 ms
+16:13:04.957	127.0.0.1:53492	admin	OK	Query executed in 8.49 ms.	9.09 ms
+16:14:13.861	127.0.0.1:53498	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.4 ms
+16:14:13.868	127.0.0.1:53498	admin	OK	Query executed in 7.22 ms.	7.72 ms
+16:17:52.477	127.0.0.1:53513	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.64 ms
+16:17:52.488	127.0.0.1:53513	admin	OK	Query executed in 10.07 ms.	10.7 ms
+16:18:43.022	127.0.0.1:53529	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.45 ms
+16:18:43.032	127.0.0.1:53529	admin	OK	Query executed in 9.23 ms.	9.8 ms
+16:19:01.543	127.0.0.1:53537	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.41 ms
+16:19:01.553	127.0.0.1:53537	admin	OK	Query executed in 8.95 ms.	9.62 ms
+16:20:22.679	127.0.0.1:53543	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.4 ms
+16:20:22.686	127.0.0.1:53543	admin	OK	Query executed in 6.45 ms.	6.95 ms
+16:20:56.931	127.0.0.1:53553	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.34 ms
+16:20:56.939	127.0.0.1:53553	admin	OK	Query executed in 7.15 ms.	7.62 ms
+16:21:15.308	127.0.0.1:53556	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.37 ms
+16:21:15.315	127.0.0.1:53556	admin	OK	Query executed in 6.6 ms.	7.07 ms
+16:22:01.108	127.0.0.1:53563	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.36 ms
+16:22:01.114	127.0.0.1:53563	admin	OK	Query executed in 5.96 ms.	6.45 ms
+16:26:18.500	127.0.0.1:53587	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.4 ms
+16:26:18.508	127.0.0.1:53587	admin	OK	Query executed in 7.52 ms.	8.02 ms
+16:28:49.529	127.0.0.1:53600	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.36 ms
+16:28:49.537	127.0.0.1:53600	admin	OK	Query executed in 7.26 ms.	7.79 ms
+16:30:03.945	127.0.0.1:53605	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.37 ms
+16:30:03.953	127.0.0.1:53605	admin	OK	Query executed in 7.18 ms.	7.65 ms
+16:30:44.443	127.0.0.1:53615	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.3 ms
+16:30:44.451	127.0.0.1:53615	admin	OK	Query executed in 7.73 ms.	8.35 ms
+16:35:55.604	127.0.0.1:53629	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.46 ms
+16:35:55.611	127.0.0.1:53629	admin	OK	Query executed in 6.09 ms.	6.59 ms
+16:39:25.369	127.0.0.1:53636	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.35 ms
+16:39:25.375	127.0.0.1:53636	admin	OK	Query executed in 5.13 ms.	5.49 ms
+16:40:13.273	127.0.0.1:53636	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.46 ms
+16:40:13.279	127.0.0.1:53636	admin	OK	Query executed in 5.45 ms.	5.91 ms
+16:40:33.124	127.0.0.1:53636	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.37 ms
+16:40:33.130	127.0.0.1:53636	admin	OK	Query executed in 5.18 ms.	5.55 ms
+16:40:59.484	127.0.0.1:53642	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.45 ms
+16:40:59.489	127.0.0.1:53642	admin	OK	Query executed in 5.01 ms.	5.4 ms
+16:42:04.942	127.0.0.1:53642	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.92 ms
+16:42:04.948	127.0.0.1:53642	admin	OK	Query executed in 5.41 ms.	5.86 ms
+16:45:34.044	127.0.0.1:53642	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.42 ms
+16:45:34.050	127.0.0.1:53642	admin	OK	Query executed in 5.15 ms.	5.53 ms
+16:52:39.751	127.0.0.1:53689	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.45 ms
+16:52:39.757	127.0.0.1:53689	admin	OK	Query executed in 5.5 ms.	6.16 ms
+16:54:31.556	127.0.0.1:53716	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.36 ms
+16:54:31.563	127.0.0.1:53716	admin	OK	Query executed in 6.5 ms.	6.95 ms
+16:55:52.587	127.0.0.1:53716	admin	REQUEST	XQUERY <root>{ for $a in collection('2020')//Race return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>	0.41 ms
+16:55:52.593	127.0.0.1:53716	admin	OK	Query executed in 5.41 ms.	5.79 ms

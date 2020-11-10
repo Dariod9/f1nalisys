@@ -1,0 +1,21 @@
+{% extends "base2.html" %}
+{% block content %}
+    <h1> {{ ano }} </h1>
+    <h2> Races </h2>
+    {% for nome,info in data.items %}
+    <div class="row row-cols-1 row-cols-md-2">
+        <div class="col mb-4">
+            <div class="card">
+              <div class="card-body">
+                    <h5 class="card-title"> {{ nome }}</h5>
+                  {% for info, n in info.items %}
+                    <p class="card-title"> {{ n }}</p>
+                  {% endfor %}
+              </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+{#    {{ html | safe }}#}
+{% endblock %}
