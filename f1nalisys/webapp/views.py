@@ -30,10 +30,11 @@ def teams2(request):
 
 # tentativa de transformação
 def teams(request):
-    query = "xquery for $c in collection('f1')//ConstructorTable return $c"
+    query = "xquery for $c in collection('f1')//ConstructorTable where $c/@season=2018 return $c"
     exe = session.execute(query)
     print(exe)
     root = etree.fromstring(exe)
+    print("root:", root)
 
     xsl_file = etree.parse('webapp/xsl_files/teams.xsl')
     tranform = etree.XSLT(xsl_file)
