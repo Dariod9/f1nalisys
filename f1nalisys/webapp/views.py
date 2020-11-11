@@ -57,7 +57,9 @@ def tracks(request):
 
     info = dict()
     for t in output['root']['elem']:
-        info[t['CircuitName']] = t['Location']['Locality']
+        info[t['CircuitName']] = (t['Location']['Locality'],t['Location']['Country'], getImagem(t['Location']['Country']))
+
+
 
     print(info)
     tparams = {
@@ -148,3 +150,50 @@ def index(request):
     tparams = {}
 
     return render(request, 'index.html', tparams)
+
+def getImagem(pais):
+    path = "/static/img/"
+    if pais == "Italy":
+        path=path+"italy.png"
+    elif pais == "Spain":
+        path=path+"spain.png"
+    elif pais == "UK":
+        path=path+"uk.png"
+    elif pais == "Australia":
+        path=path+"australia.png"
+    elif pais == "USA":
+        path=path+"usa.png"
+    elif pais == "Bahrain":
+        path=path+"bahrain.png"
+    elif pais == "Azerbaijan":
+        path=path+"azerbeijan.png"
+    elif pais == "Germany":
+        path=path+"germany.png"
+    elif pais == "Hungary":
+        path=path+"hungary.png"
+    elif pais == "Brazil":
+        path=path+"brazil.png"
+    elif pais == "Singapore":
+        path=path+"singapore.png"
+    elif pais == "Monaco":
+        path=path+"monaco.png"
+    elif pais == "Austria":
+        path=path+"austria.png"
+    elif pais == "France":
+        path=path+"france.png"
+    elif pais == "Mexico":
+        path=path+"mexico.png"
+    elif pais == "China":
+        path=path+"china.png"
+    elif pais == "Russia":
+        path=path+"russia.png"
+    elif pais == "Belgium":
+        path=path+"belgium.png"
+    elif pais == "Japan":
+        path=path+"japan.png"
+    elif pais == "Canada":
+        path=path+"canada.png"
+    elif pais == "UAE":
+        path=path+"abudhabi.png"
+
+    return path
