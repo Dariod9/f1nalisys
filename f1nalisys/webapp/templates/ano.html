@@ -1,21 +1,52 @@
 {% extends "base2.html" %}
 {% block content %}
     <h1> {{ ano }} </h1>
-    <h2> Races </h2>
-    {% for nome,info in data.items %}
-    <div class="row row-cols-1 row-cols-md-2">
-        <div class="col mb-4">
-            <div class="card">
-              <div class="card-body">
-                    <h5 class="card-title"> {{ nome }}</h5>
-                  {% for info, n in info.items %}
-                    <p class="card-title"> {{ n }}</p>
-                  {% endfor %}
-              </div>
+
+    <div class="row">
+        <div class="col-7">
+            <h2> Races </h2>
+            <div class="row row-cols-1 row-cols-md-2">
+                {% for nome,info in data.items %}
+                    <div class="col mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"> {{ nome }}</h5>
+                                {% for info, n in info.items %}
+                                    <p class="card-title"> {{ n }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-    </div>
-    {% endfor %}
 
-{#    {{ html | safe }}#}
+        {# Div de divisao entre as outras #}
+        <div class="col-1"></div>
+
+        {# coluna top3 drivers e teams #}
+        <div class="col-4">
+            <h2> Top3 Drivers </h2>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">title</h5>
+                    <p class="card-title">details ksaugfuwebgfuweigfuyv uwevfcuyvw </p>
+                </div>
+            </div>
+
+            &#160;
+
+            <h2>Top3 Teams</h2>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">title</h5>
+                    <p class="card-title">details ksaugfuwebgfuweigfuyv uwevfcuyvw </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 {% endblock %}

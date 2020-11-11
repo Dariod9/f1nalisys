@@ -21,7 +21,7 @@ def teams2(request):
         info[t['Name']] = t['Nationality']
 
     tparams = {
-        'title': 'Teams',
+        'title': 'teams',
         'teams': info,
     }
 
@@ -40,13 +40,15 @@ def teams(request):
     html = tranform(root)
 
     tparams = {
+        'title': 'teams',
         'html': html
     }
     return render(request, 'teams.html', tparams)
 
 
 def drivers(request):
-    query = "xquery for $p in collection('f1')//DriverTable where $p/@season=2019 return $p"
+    ano = "2020"
+    query = "xquery for $p in collection('f1')//DriverTable where $p/@season=" + str(ano) + " return $p"
     exe = session.execute(query)
 
     output = xmltodict.parse(exe)
@@ -86,6 +88,7 @@ def ano(request, ano):
     print(info)
 
     tparams= {
+        'title': ano,
         "ano" : ano,
         "data": info
     }
