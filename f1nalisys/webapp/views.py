@@ -33,17 +33,37 @@ def teams(request):
     query = "xquery for $c in collection('f1')//ConstructorTable return $c"
     exe = session.execute(query)
     print(exe)
-    root = etree.fromstring(exe)
+    #root = etree.tostring(exe)
 
     xsl_file = etree.parse('webapp/xsl_files/teams.xsl')
     tranform = etree.XSLT(xsl_file)
-    html = tranform(root)
+    html = tranform(exe)
 
     tparams = {
         'title': 'teams',
         'html': html
     }
     return render(request, 'teams.html', tparams)
+
+def tracks(request):
+    query = "xquery <root>{for $c in collection('f1')//Circuit return <elem> {$c/CircuitName} {$c/Location} </elem>}</root> "
+    # dá erro: nao encontra o local. Não sei em que pasta guardar os queries com as funçoes para chamar aqui
+    # query = "xquery <root>{ local:get-constructors() }</root>"
+    exe = session.execute(query)
+
+    output = xmltodict.parse(exe)
+    print("out: ", output)
+
+    info = dict()
+    for t in output['root']['elem']:
+        info[t['CircuitName']] = t['Location']['Locality']
+
+    print(info)
+    tparams = {
+        'title': 'Tracks',
+        'tracklist': info,
+    }
+    return render(request, 'tracks.html', tparams)
 
 
 def drivers(request):

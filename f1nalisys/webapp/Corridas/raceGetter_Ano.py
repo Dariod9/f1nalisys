@@ -29,6 +29,11 @@ def main(ano):
     f = open(path+"/20"+str(anoDef)+"_constructors.xml", "x")
     resposta= change(response.text)
     f.write(resposta)
+    
+    response = requests.get("http://ergast.com/api/f1/20"+str(anoDef)+"/circuits", verify=False)
+    f = open(path+"/20"+str(anoDef)+"circuits.xml", "x")
+    resposta= change(response.text)
+    f.write(resposta)
 
 
 

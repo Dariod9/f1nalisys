@@ -1,5 +1,5 @@
 # Paths
-INPUTPATH = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/Corridas/2020/
+INPUTPATH = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/Corridas/
 DATAPATH = C:\Users\DarioMatos\Desktop\EDC\f1nalisys\f1nalisys\webapp\BaseX944\basex\
 WORKPATH = C:/Users/DarioMatos/Desktop/EDC/Aula4/appWeb/
 PROJECTPATH = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/BaseX944/basex/
@@ -21,7 +21,7 @@ GUISIZE0 = 1004
 GUISIZE1 = 748
 GUILOC0 = 12
 GUILOC1 = 12
-MAXSTATE = false
+MAXSTATE = true
 SHOWBUTTONS = true
 SHOWINPUT = true
 SHOWSTATUS = true
@@ -62,7 +62,7 @@ SHOWHIDDEN = false
 SEARCHMODE = 0
 FILTERRT = false
 EXECRT = false
-DBNAME = 2020
+DBNAME = f1
 LASTINSERT = 1
 
 # Visualizations
@@ -91,12 +91,13 @@ XQUERY = 0
 # Files
 EDITOR = 5
 EDITOR1 = C:/Users/DarioMatos/Desktop/EDC/Aula4/appWeb/h.xq
-EDITOR2 = C:/Users/DarioMatos/Desktop/EDC/Aula4/appWeb/b.xq
-EDITOR3 = C:/Users/DarioMatos/Desktop/EDC/Aula4/appWeb/c.xq
-EDITOR4 = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/BaseX944/basex/data/for2/txtr.basex
-EDITOR5 = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/BaseX944/basex/data/for2/atvr.basex
-INPUTS = 1
-INPUTS1 = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/Corridas/2020/
+EDITOR2 = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/BaseX944/basex/data/for2/txtr.basex
+EDITOR3 = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/BaseX944/basex/data/for2/atvr.basex
+EDITOR4 = C:/Users/DarioMatos/Desktop/EDC/Aula4/appWeb/b.xq
+EDITOR5 = C:/Users/DarioMatos/Desktop/EDC/Aula4/appWeb/c.xq
+INPUTS = 2
+INPUTS1 = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/Corridas/
+INPUTS2 = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/Corridas/2020/
 OPEN = 3
 OPEN1 = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/BaseX944/basex/data/for2/atvr.basex
 OPEN2 = C:/Users/DarioMatos/Desktop/EDC/f1nalisys/f1nalisys/webapp/BaseX944/basex/data/for2/txtr.basex

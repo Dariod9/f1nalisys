@@ -24,4 +24,5 @@ urlpatterns = [
     path('<int:ano>', views.ano),
     path('teams', views.teams, name="teams"),
     path('drivers/', views.drivers, name="drivers"),
+    path('tracks/', views.tracks, name="tracks"),
 ]
