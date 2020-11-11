@@ -33,11 +33,11 @@ def teams(request):
     query = "xquery for $c in collection('f1')//ConstructorTable return $c"
     exe = session.execute(query)
     print(exe)
-    #root = etree.tostring(exe)
+    root = etree.fromstring(exe)
 
     xsl_file = etree.parse('webapp/xsl_files/teams.xsl')
     tranform = etree.XSLT(xsl_file)
-    html = tranform(exe)
+    html = tranform(root)
 
     tparams = {
         'title': 'teams',
