@@ -69,6 +69,29 @@ def tracks(request):
     return render(request, 'tracks.html', tparams)
 
 
+def standings(request):
+    queryRace = "xquery <root>{for $c in collection('f1')//RaceTable return <elem> {$c/RaceName} {$c/Circuit/CircuitName} {$c/Location/Country}  </elem>}</root> "
+    queryResults = "xquery <root>{for $c in collection('f1')//Driver return <elem> {$c/Result/Driver} {$c/Circuit/CircuitName} {$c/Location/Country}  </elem>}</root> "
+
+    exe = session.execute(queryRace)
+
+    output = xmltodict.parse(exe)
+    print("out: ", output)
+
+    info = dict()
+    for t in output['root']['elem']:
+        info[t['CircuitName']] = (t['Location']['Locality'],t['Location']['Country'], getImagem(t['Location']['Country']))
+
+
+
+    print(info)
+    tparams = {
+        'title': 'Tracks',
+        'tracklist': info,
+    }
+    return render(request, 'tracks.html', tparams)
+
+
 def drivers(request):
     ano = "2020"
     query = "xquery for $p in collection('f1')//DriverTable where $p/@season=" + str(ano) + " return $p"

@@ -34,6 +34,21 @@ def main(ano):
     f = open(path+"/20"+str(anoDef)+"circuits.xml", "x")
     resposta= change(response.text)
     f.write(resposta)
+    
+    response = requests.get("http://ergast.com/api/f1/20"+str(anoDef)+"/1/results", verify=False)
+    f = open(path+"/20"+str(anoDef)+"race1.xml", "x")
+    resposta= change(response.text)
+    f.write(resposta)
+    
+    response = requests.get("http://ergast.com/api/f1/20"+str(anoDef)+"/driverStandings", verify=False)
+    f = open(path+"/20"+str(anoDef)+"driverStandings.xml", "x")
+    resposta= change(response.text)
+    f.write(resposta)
+    
+    response = requests.get("http://ergast.com/api/f1/20"+str(anoDef)+"/constructorStandings", verify=False)
+    f = open(path+"/20"+str(anoDef)+"constructorStandings.xml", "x")
+    resposta= change(response.text)
+    f.write(resposta)
 
 
 
