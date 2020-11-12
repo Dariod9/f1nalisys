@@ -5,6 +5,8 @@ from django.shortcuts import render
 from lxml import etree
 
 session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
+
+
 # Create your views here.
 
 
@@ -29,7 +31,7 @@ def teams2(request):
     return render(request, 'teams.html', tparams)
 
 
-# tentativa de transformação
+# teams com xslt
 def teams(request):
     query = "xquery for $c in collection('f1')//ConstructorTable where $c/@season=2018 return $c"
     exe = session.execute(query)
@@ -47,6 +49,7 @@ def teams(request):
     }
     return render(request, 'teams.html', tparams)
 
+
 def tracks(request):
     query = "xquery <root>{for $c in collection('f1')//Circuit return <elem> {$c/CircuitName} {$c/Location} </elem>}</root> "
     # dá erro: nao encontra o local. Não sei em que pasta guardar os queries com as funçoes para chamar aqui
@@ -58,9 +61,8 @@ def tracks(request):
 
     info = dict()
     for t in output['root']['elem']:
-        info[t['CircuitName']] = (t['Location']['Locality'],t['Location']['Country'], getImagem(t['Location']['Country']))
-
-
+        info[t['CircuitName']] = (
+        t['Location']['Locality'], t['Location']['Country'], getImagem(t['Location']['Country']))
 
     print(info)
     tparams = {
@@ -81,9 +83,8 @@ def standings(request):
 
     info = dict()
     for t in output['root']['elem']:
-        info[t['CircuitName']] = (t['Location']['Locality'],t['Location']['Country'], getImagem(t['Location']['Country']))
-
-
+        info[t['CircuitName']] = (
+        t['Location']['Locality'], t['Location']['Country'], getImagem(t['Location']['Country']))
 
     print(info)
     tparams = {
@@ -97,20 +98,16 @@ def drivers(request):
     ano = "2020"
     query = "xquery for $p in collection('f1')//DriverTable where $p/@season=" + str(ano) + " return $p"
     exe = session.execute(query)
+    root = etree.fromstring(exe)
 
-    output = xmltodict.parse(exe)
-    print("out: ", output)
+    xsl_file = etree.parse("webapp/xsl_files/drivers.xsl")
+    transform = etree.XSLT(xsl_file)
+    drivers_html = transform(root)
 
-    info = dict()
-    for t in output['DriverTable']['Driver']:
-        info[t['PermanentNumber']] = dict()
-        info[t['PermanentNumber']]['name'] = t['GivenName'] + ' ' + t['FamilyName']
-        info[t['PermanentNumber']]['date'] = t['DateOfBirth']
-        info[t['PermanentNumber']]['nation'] = t['Nationality']
 
     tparams = {
         'title': 'drivers',
-        'drivers': info,
+        'drivers_html': drivers_html,
     }
 
     return render(request, 'drivers.html', tparams)
@@ -121,25 +118,43 @@ def about(request):
 
 
 def ano(request, ano):
-    input ="xquery <root>{ for $a in collection('f1')//Race where $a/@season = " + str(ano) + " return <elem> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </elem> }</root>"
-    query = session.execute(input)
+    # races
+    query = "xquery <Races>{ for $a in collection('f1')//Race where $a/@season = " + str(
+        ano) + " return <Race> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </Race> }</Races>"
+    exe = session.execute(query)
+    root = etree.fromstring(exe)
 
-    info = dict()
-    # print(query)
-    res = xmltodict.parse(query)
-    for c in res["root"]["elem"]:
-        info[c["RaceName"]] = dict()
-        info[c["RaceName"]]["Circuit"] = c["Circuit"]["CircuitName"]
-        info[c["RaceName"]]["Location"] = c["Circuit"]["Location"]["Locality"]+", "+c["Circuit"]["Location"]["Country"]
+    xsl_file = etree.parse('webapp/xsl_files/races_overview.xsl')
+    tranform = etree.XSLT(xsl_file)
+    races_snippet = tranform(root)
 
-    print(info)
+    # top3 drivers
+    top3drivers_query = "xquery <root>{ for $c in collection('f1')//StandingsTable where $c/@season=" + str(
+        ano) + " return $c//DriverStanding[position() < 4] }</root>"
+    exe_drivers = session.execute(top3drivers_query)
+    root_drivers = etree.fromstring(exe_drivers)
 
-    tparams= {
-        'title': ano,
-        "ano" : ano,
-        "data": info
+    xsl_file_drivers = etree.parse('webapp/xsl_files/top3drivers.xsl')
+    tranform_drivers = etree.XSLT(xsl_file_drivers)
+    drivers_snippet = tranform_drivers(root_drivers)
+
+    # top3 teams
+    top3teams_query = "xquery <root>{ for $c in collection('f1')//StandingsTable where $c/@season=" + str(
+        ano) + " return $c//ConstructorStanding[position() < 4] }</root>"
+    exe_teams = session.execute(top3teams_query)
+    root_teams = etree.fromstring(exe_teams)
+
+    xsl_file_teams = etree.parse('webapp/xsl_files/top3teams.xsl')
+    tranform_teams = etree.XSLT(xsl_file_teams)
+    teams_snippet = tranform_teams(root_teams)
+
+    tparams = {
+        'ano': ano,
+        'title': 'overview',
+        'races_snippet': races_snippet,
+        'drivers_snippet': drivers_snippet,
+        'teams_snippet': teams_snippet,
     }
-    # print(res["root"]["elem"])
     return render(request, 'ano.html', tparams)
 
 
@@ -174,38 +189,37 @@ def index(request):
     session.execute("open f1")
     try:
         session.execute("delete rssf1.xml")
-        #add document
+        # add document
 
-        #GERAR
+        # GERAR
 
         exec(open('webapp/Corridas/rssGetter.py').read())
 
         root = etree.parse("rssf1.xml")
-        #print(root)
+        # print(root)
 
         session.add("RSS", etree.tostring(root).decode("utf-8"))
-        #print(session.info())
+        # print(session.info())
     except IOError:
-        print(session.info()+"\n ERRO MPTS")
+        print(session.info() + "\n ERRO MPTS")
 
     input = "xquery <root>{ for $i in collection('f1')//item[position()<6] return <elem> {$i/title} {$i/pubDate} {$i/author} {$i/link} {$i/description} </elem>} </root>"
     query = session.execute(input)
-    #
 
     info = dict()
     capa = dict()
     res = xmltodict.parse(query)
 
-    i=1;
+    i = 1;
     for c in res["root"]["elem"]:
-        c["description"]=c["description"].replace("<p>", "")
-        c["description"]=c["description"].replace("</p>", "")
+        c["description"] = c["description"].replace("<p>", "")
+        c["description"] = c["description"].replace("</p>", "")
         if i == 1:
             capa[i] = (c["title"], c["pubDate"], c["author"], c["link"], c["description"])
         else:
             info[i] = (c["title"], c["pubDate"], c["author"], c["link"], c["description"])
-        #print(info[i])
-        i+=1
+        # print(info[i])
+        i += 1
 
     tparams = {
         'news': info,
@@ -214,49 +228,50 @@ def index(request):
 
     return render(request, 'index.html', tparams)
 
+
 def getImagem(pais):
     path = "/static/img/"
     if pais == "Italy":
-        path=path+"italy.png"
+        path = path + "italy.png"
     elif pais == "Spain":
-        path=path+"spain.png"
+        path = path + "spain.png"
     elif pais == "UK":
-        path=path+"uk.png"
+        path = path + "uk.png"
     elif pais == "Australia":
-        path=path+"australia.png"
+        path = path + "australia.png"
     elif pais == "USA":
-        path=path+"usa.png"
+        path = path + "usa.png"
     elif pais == "Bahrain":
-        path=path+"bahrain.png"
+        path = path + "bahrain.png"
     elif pais == "Azerbaijan":
-        path=path+"azerbeijan.png"
+        path = path + "azerbeijan.png"
     elif pais == "Germany":
-        path=path+"germany.png"
+        path = path + "germany.png"
     elif pais == "Hungary":
-        path=path+"hungary.png"
+        path = path + "hungary.png"
     elif pais == "Brazil":
-        path=path+"brazil.png"
+        path = path + "brazil.png"
     elif pais == "Singapore":
-        path=path+"singapore.png"
+        path = path + "singapore.png"
     elif pais == "Monaco":
-        path=path+"monaco.png"
+        path = path + "monaco.png"
     elif pais == "Austria":
-        path=path+"austria.png"
+        path = path + "austria.png"
     elif pais == "France":
-        path=path+"france.png"
+        path = path + "france.png"
     elif pais == "Mexico":
-        path=path+"mexico.png"
+        path = path + "mexico.png"
     elif pais == "China":
-        path=path+"china.png"
+        path = path + "china.png"
     elif pais == "Russia":
-        path=path+"russia.png"
+        path = path + "russia.png"
     elif pais == "Belgium":
-        path=path+"belgium.png"
+        path = path + "belgium.png"
     elif pais == "Japan":
-        path=path+"japan.png"
+        path = path + "japan.png"
     elif pais == "Canada":
-        path=path+"canada.png"
+        path = path + "canada.png"
     elif pais == "UAE":
-        path=path+"abudhabi.png"
+        path = path + "abudhabi.png"
 
     return path

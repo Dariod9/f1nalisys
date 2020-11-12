@@ -1,19 +1,4 @@
 {% extends "base2.html" %}
 {% block content %}
-    <h1>Drivers</h1>
-
-    <div class="row row-cols-1 row-cols-md-2">
-    {% for c, n in drivers.items %}
-        <div class="col mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title"> {{ c }}</h5>
-                {% for n, i in n.items %}
-                    <p class="card-text"> {{ i }}</p>
-                {% endfor %}
-              </div>
-            </div>
-        </div>
-    {% endfor %}
-    </div>
+    {{ drivers_html | safe }}
 {% endblock %}

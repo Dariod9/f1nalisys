@@ -24,7 +24,7 @@
                         <p class="card-text"> <xsl:value-of select="Nationality"></xsl:value-of> </p>
                       </div>
                     </div>
-                    </div>
+                </div>
             </xsl:for-each>
         </div>
     </xsl:template>
