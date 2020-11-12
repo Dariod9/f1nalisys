@@ -59,7 +59,7 @@ PARSEPROJ = true
 AUTO = true
 FILES = *.xml, *.xq*
 SHOWHIDDEN = false
-SEARCHMODE = 0
+SEARCHMODE = 2
 FILTERRT = false
 EXECRT = false
 DBNAME = f1
@@ -83,9 +83,12 @@ SEARCHED = 0
 REPLACED = 0
 
 # History
-COMMANDS = 1
-COMMANDS1 = open 2020
-SEARCH = 0
+COMMANDS = 3
+COMMANDS1 = add ../../Corridas/rssf1.xml
+COMMANDS2 = add rssf1.xml
+COMMANDS3 = open 2020
+SEARCH = 1
+SEARCH1 = add rssf1.xml
 XQUERY = 0
 
 # Files

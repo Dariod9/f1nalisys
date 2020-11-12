@@ -1,4 +1,5 @@
-import xmltodict
+import xmltodict, requests
+
 from BaseXClient import BaseXClient
 from django.shortcuts import render
 from lxml import etree
@@ -170,7 +171,46 @@ def index(request):
     # #info = dict()
     # res = xmltodict.parse(query)
     # print(res)
-    tparams = {}
+    session.execute("open f1")
+    try:
+        session.execute("delete rssf1.xml")
+        #add document
+
+        #GERAR
+
+        exec(open('webapp/Corridas/rssGetter.py').read())
+
+        root = etree.parse("rssf1.xml")
+        #print(root)
+
+        session.add("RSS", etree.tostring(root).decode("utf-8"))
+        #print(session.info())
+    except IOError:
+        print(session.info()+"\n ERRO MPTS")
+
+    input = "xquery <root>{ for $i in collection('f1')//item[position()<6] return <elem> {$i/title} {$i/pubDate} {$i/author} {$i/link} {$i/description} </elem>} </root>"
+    query = session.execute(input)
+    #
+
+    info = dict()
+    capa = dict()
+    res = xmltodict.parse(query)
+
+    i=1;
+    for c in res["root"]["elem"]:
+        c["description"]=c["description"].replace("<p>", "")
+        c["description"]=c["description"].replace("</p>", "")
+        if i == 1:
+            capa[i] = (c["title"], c["pubDate"], c["author"], c["link"], c["description"])
+        else:
+            info[i] = (c["title"], c["pubDate"], c["author"], c["link"], c["description"])
+        #print(info[i])
+        i+=1
+
+    tparams = {
+        'news': info,
+        'first_news': capa
+    }
 
     return render(request, 'index.html', tparams)
 
