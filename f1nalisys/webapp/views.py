@@ -252,6 +252,8 @@ def getImagem(pais):
         path = path + "hungary.png"
     elif pais == "Brazil":
         path = path + "brazil.png"
+    elif pais == "Turkey":
+        path = path + "turkey.png"
     elif pais == "Singapore":
         path = path + "singapore.png"
     elif pais == "Monaco":
@@ -274,5 +276,20 @@ def getImagem(pais):
         path = path + "canada.png"
     elif pais == "UAE":
         path = path + "abudhabi.png"
+    elif pais == "Portugal":
+        path = path + "portugal.png"
 
     return path
+
+def getFlag(pais):
+    path = "/static/img/"
+    if pais == "Dutch" or pais == "Netherlands":
+        path = path + "nethflag.png"
+    elif pais == "British" or pais == "UK":
+        path = path + "ukflag.png"
+    elif pais == "Finnish" or pais == "Finland":
+        path = path + "finflag.png"
+    elif pais == "Deutsch" or pais == "Germany" or pais == "German":
+        path = path + "gerflag.png"
+    elif pais == "French" or pais == "France":
+        path = path + "fraflag.png"

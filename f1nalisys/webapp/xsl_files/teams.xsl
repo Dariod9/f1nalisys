@@ -14,7 +14,7 @@
 
                       <div class="card-body">
                         <h5 class="card-title">
-                            <a target="_blank">
+                                <a target="_blank" style="color:rgb(255,0,0);">
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="@url"/>
                                 </xsl:attribute>
