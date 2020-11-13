@@ -32,8 +32,8 @@ def teams2(request):
 
 
 # teams com xslt
-def teams(request):
-    query = "xquery for $c in collection('f1')//ConstructorTable where $c/@season=2018 return $c"
+def teams(request, ano="2020"):
+    query = "xquery for $c in collection('f1')//ConstructorTable where $c/@season=" + str(ano) + " return $c"
     exe = session.execute(query)
     print(exe)
     root = etree.fromstring(exe)
@@ -44,6 +44,7 @@ def teams(request):
     html = tranform(root)
 
     tparams = {
+        'ano': ano,
         'title': 'teams',
         'html': html
     }
@@ -94,8 +95,7 @@ def standings(request):
     return render(request, 'tracks.html', tparams)
 
 
-def drivers(request):
-    ano = "2020"
+def drivers(request, ano="2020"):
     query = "xquery for $p in collection('f1')//DriverTable where $p/@season=" + str(ano) + " return $p"
     exe = session.execute(query)
     root = etree.fromstring(exe)
@@ -106,6 +106,7 @@ def drivers(request):
 
 
     tparams = {
+        'ano': ano,
         'title': 'drivers',
         'drivers_html': drivers_html,
     }
@@ -117,7 +118,7 @@ def about(request):
     return render(request, 'about.html', {'title': 'About'})
 
 
-def ano(request, ano):
+def ano(request, ano="2020"):
     # races
     query = "xquery <Races>{ for $a in collection('f1')//Race where $a/@season = " + str(
         ano) + " return <Race> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </Race> }</Races>"
