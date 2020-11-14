@@ -1,11 +1,11 @@
-import xmltodict, requests
+import xmltodict, requests, re
 
 from BaseXClient import BaseXClient
 from django.shortcuts import render
 from lxml import etree
 
 session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
-
+session.execute("open f1")
 
 # Create your views here.
 
@@ -32,9 +32,15 @@ def teams2(request):
 
 
 # teams com xslt
-def teams(request, ano="2020"):
+def teams(request, ano="2013"):
     query = "xquery for $c in collection('f1')//ConstructorTable where $c/@season=" + str(ano) + " return $c"
     exe = session.execute(query)
+
+    if(exe == ""):
+        getTeams(ano)
+        return teams(request, ano)
+
+
     print(exe)
     root = etree.fromstring(exe)
     print("root:", root)
@@ -129,9 +135,14 @@ def constructors_standings(request, ano):
     return render(request, 'constructors_standings.html', tparams)
 
 
-def drivers(request, ano="2020"):
+def drivers(request, ano="2010"):
     query = "xquery for $p in collection('f1')//DriverTable where $p/@season=" + str(ano) + " return $p"
     exe = session.execute(query)
+
+    if (exe == ""):
+        getDrivers(ano)
+        return drivers(request, ano)
+
     root = etree.fromstring(exe)
 
     xsl_file = etree.parse("webapp/xsl_files/drivers.xsl")
@@ -148,6 +159,18 @@ def drivers(request, ano="2020"):
 
     return render(request, 'drivers.html', tparams)
 
+def getDrivers(ano):
+    response = requests.get("http://ergast.com/api/f1/" + ano + "/drivers", verify=False)
+    resposta = response.text
+    res2 = change(resposta)
+
+    session.add(ano + "/" + ano + "_drivers", res2)
+
+def getTeams(ano):
+        response = requests.get("http://ergast.com/api/f1/" + ano + "/constructors", verify=False)
+        resposta = response.text
+        res2 = change(resposta)
+        session.add(ano + "/" + ano + "_constructors", res2)
 
 def about(request):
     return render(request, 'about.html', {'title': 'About'})
@@ -331,3 +354,10 @@ def getFlag(pais):
         path = path + "gerflag.png"
     elif pais == "French" or pais == "France":
         path = path + "fraflag.png"
+
+def change(stringz):
+    #str1 = stringz.replace("utf-8", "iso-8859-1")
+    str2 = stringz.replace('<?xml-stylesheet type="text/xsl" href="/schemas/mrd-1.4.xsl"?>', '')
+    result = re.search('<MRData(.*)>', str2)
+    str3 = str2.replace(result.group(1), '')
+    return str3
