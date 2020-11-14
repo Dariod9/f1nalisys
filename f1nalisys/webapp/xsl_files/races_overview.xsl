@@ -5,29 +5,48 @@
 
         <div class="col-7">
             <h2> Races </h2>
+            <h5>
+                <xsl:value-of select="//Race[last()]/@round"></xsl:value-of>
+                Rounds
+            </h5>
             <div class="row row-cols-1 row-cols-md-2">
                 <xsl:for-each select="/Races/Race">
                 <div class="col mb-4">
                     <div class="card">
 
-                      <div class="card-body">
-                          <h5 class="card-title" style="color:rgb(255,0,0);">
-                              <xsl:value-of select="RaceName"></xsl:value-of>
-                          </h5>
-                          <p class="card-text">
+                        <div class="card-header">
+                            <b class="card-title">
+                                <a target="_blank" style="color:rgb(255,0,0);">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="@url"/>
+                                </xsl:attribute>
+                                    <xsl:value-of select="RaceName"></xsl:value-of>
+                                </a>
+                            </b>
+                            -
+                            round
+                            <xsl:value-of select="@round"></xsl:value-of>
+                        </div>
+
+                        <div class="card-body">
+                            <p class="card-text">
                               <a target="_blank">
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="Circuit/@url"/>
                                 </xsl:attribute>
                                   <xsl:value-of select="Circuit/CircuitName"></xsl:value-of>
                               </a>
-                          </p>
-                          <p class="card-text">
-                              <xsl:value-of select="Circuit/Location/Locality"></xsl:value-of>
-                              ,
-                              <xsl:value-of select="Circuit/Location/Country"></xsl:value-of>
-                          </p>
-                      </div>
+                            </p>
+                            <p class="card-text">
+                                <xsl:value-of select="Circuit/Location/Locality"></xsl:value-of>
+                                ,
+                                <xsl:value-of select="Circuit/Location/Country"></xsl:value-of>
+                            </p>
+                            <p class="card-text">
+                                <xsl:value-of select="Date"></xsl:value-of>
+                            </p>
+                            <a href="#" class="btn btn-info btn-sm">Standings</a>
+                        </div>
                     </div>
                 </div>
             </xsl:for-each>

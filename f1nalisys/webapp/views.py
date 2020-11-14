@@ -75,7 +75,7 @@ def tracks(request):
     return render(request, 'tracks.html', tparams)
 
 
-def standings(request):
+def standings2(request, ano):
     queryRace = "xquery <root>{for $c in collection('f1')//RaceTable return <elem> {$c/RaceName} {$c/Circuit/CircuitName} {$c/Location/Country}  </elem>}</root> "
     queryResults = "xquery <root>{for $c in collection('f1')//Driver return <elem> {$c/Result/Driver} {$c/Circuit/CircuitName} {$c/Location/Country}  </elem>}</root> "
 
@@ -95,6 +95,38 @@ def standings(request):
         'tracklist': info,
     }
     return render(request, 'tracks.html', tparams)
+
+
+def drivers_standings(request, ano):
+    query = "xquery for $c in collection('f1')//StandingsTable where $c/@season=" + str(ano) + " where $c//child::DriverStanding return $c"
+    exe = session.execute(query)
+    root = etree.fromstring(exe)
+
+    xsl_file = etree.parse("webapp/xsl_files/drivers-standings.xsl")
+    tranform = etree.XSLT(xsl_file)
+    html = tranform(root)
+
+    tparams = {
+        'title': 'Drivers Standings',
+        'standings': html,
+    }
+    return render(request, 'drivers_standings.html', tparams)
+
+
+def constructors_standings(request, ano):
+    query = "xquery for $c in collection('f1')//StandingsTable where $c/@season=" + str(ano) + " where $c//child::ConstructorStanding return $c"
+    exe = session.execute(query)
+    root = etree.fromstring(exe)
+
+    xsl_file = etree.parse("webapp/xsl_files/constructors-standings.xsl")
+    tranform = etree.XSLT(xsl_file)
+    html = tranform(root)
+
+    tparams = {
+        'title': 'Constructors Standings',
+        'standings': html,
+    }
+    return render(request, 'constructors_standings.html', tparams)
 
 
 def drivers(request, ano="2020"):
@@ -123,9 +155,8 @@ def about(request):
 
 def ano(request, ano="2020"):
     # races
-    query = "xquery <Races>{ for $a in collection('f1')//Race where $a/@season = " + str(
-        ano) + " return <Race> {$a/RaceName} {$a/Circuit}{$a/Location/Locality} {$a/Locality/Country} </Race> }</Races>"
-    exe = session.execute(query)
+    races_query = "xquery <Races>{ for $a in collection('f1')//RaceTable where $a/@season = " + str(ano) + " return $a/Race }</Races>"
+    exe = session.execute(races_query)
     root = etree.fromstring(exe)
 
     xsl_file = etree.parse('webapp/xsl_files/races_overview.xsl')
@@ -155,6 +186,8 @@ def ano(request, ano="2020"):
     tparams = {
         'urll': "/season",
         'ano': ano,
+        'drivers_standings_url': "/season/" + str(ano),
+        'constructors_standings_url': "/season/" + str(ano),
         'title': 'overview',
         'races_snippet': races_snippet,
         'drivers_snippet': drivers_snippet,

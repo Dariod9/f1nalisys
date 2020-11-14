@@ -12,12 +12,16 @@
                     {# coluna top3 drivers e teams #}
                     <div class="col-4">
                         {# top3 drivers #}
+                        <h2> Top3 Drivers </h2>
+                        <a href="{{ drivers_standings_url }}/drivers_standings" class="alert-link">Overall Standings</a>
                         {{ drivers_snippet | safe }}
 
                         {# espaço entre divs #}
                         &#160;
 
                         {# top3 constructors #}
+                        <h2>Top3 Constructors</h2>
+                        <a href="{{ constructors_standings_url }}/constructors_standings" class="alert-link">Overall Standings</a>
                         {{ teams_snippet | safe }}
 
                     </div>

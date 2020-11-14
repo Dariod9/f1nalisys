@@ -2,7 +2,6 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="/">
-        <h2>Top3 Constructors</h2>
 
         <xsl:for-each select="//ConstructorStanding">
             <div class="card">
