@@ -193,7 +193,8 @@ def index(request):
     # print(res)
     session.execute("open f1")
     try:
-        session.execute("delete rssf1.xml")
+        session.execute("delete RSS")
+        print(session.info())
         # add document
 
         # GERAR
