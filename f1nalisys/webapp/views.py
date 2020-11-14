@@ -44,6 +44,7 @@ def teams(request, ano="2020"):
     html = tranform(root)
 
     tparams = {
+        'urll': "/teams",
         'ano': ano,
         'title': 'teams',
         'html': html
@@ -67,6 +68,7 @@ def tracks(request):
 
     print(info)
     tparams = {
+        'urll': "/tracks",
         'title': 'Tracks',
         'tracklist': info,
     }
@@ -106,6 +108,7 @@ def drivers(request, ano="2020"):
 
 
     tparams = {
+        'urll': "/drivers",
         'ano': ano,
         'title': 'drivers',
         'drivers_html': drivers_html,
@@ -150,6 +153,7 @@ def ano(request, ano="2020"):
     teams_snippet = tranform_teams(root_teams)
 
     tparams = {
+        'urll': "/season",
         'ano': ano,
         'title': 'overview',
         'races_snippet': races_snippet,
