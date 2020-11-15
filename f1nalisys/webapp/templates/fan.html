@@ -1,0 +1,89 @@
+{% extends "base2.html" %}
+{% block content %}
+    <h1>Create your driver</h1>
+    <br/>
+    <div class="row row-cols-1 row-cols-md-3">
+        <div class="col-1">
+            <div class="card">
+                <div class="card-body" align="center">
+                    <h5 class="card-title" style="color:rgb(255,0,0);"> Name </h5>
+                    <br/>
+                    <input type="text" class="card-text" id="fname" name="fname"><br><br>
+                </div>
+            </div>
+            <br/>
+            <div class="card">
+                <div class="card-body" align="center">
+                    <h5 class="card-title" style="color:rgb(255,0,0);"> Nationality </h5>
+                    <br/>
+                    <input type="text" class="card-text" id="nationality" name="nationality"><br><br>
+                </div>
+            </div>
+            <br/>
+            <div class="card">
+                <div class="card-body" align="center">
+                    <h5 class="card-title" style="color:rgb(255,0,0);"> Constructor </h5>
+                    <br/>
+                    <input type="text" class="card-text" id="team" name="team"><br><br>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body" align="center">
+                    <img src="../static/img/profile.png" width="250" height="250">
+                    <h5 class="card-title" style="color:rgb(255,0,0);"> Profile </h5>
+                    <br/>
+                    <form action="/action_page.php" >
+                        <input type="file" id="myFile" name="filename">
+                    </form>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div align="center" size="200">
+                <a class="button button3" href="{% url   %}" style=" background-color:rgb(255,50,50); padding: 15px 52px; font-family: formula1; font-palette: light "> Submit</a>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body" align="center">
+                    <h5 class="card-title" style="color:rgb(255,0,0);"> Seasons </h5>
+                    <input type="checkbox" id="2020" name="2020" value="2020">
+                    <label for="2020"> 2020 </label><br>
+                    <input type="checkbox" id="2019" name="2019" value="2019">
+                    <label for="2019"> 2019</label><br>
+                    <input type="checkbox" id="2018" name="2018" value="2018">
+                    <label for="2018"> 2018</label><br>
+                    <input type="checkbox" id="2017" name="2017" value="2017">
+                    <label for="2017"> 2017</label><br>
+                    <input type="checkbox" id="2016" name="2016" value="2016">
+                    <label for="2016"> 2016</label><br>
+                    <input type="checkbox" id="2015" name="2015" value="2015">
+                    <label for="2015"> 2015</label><br>
+                    <input type="checkbox" id="2014" name="2014" value="2014">
+                    <label for="2014"> 2014</label><br>
+                    <input type="checkbox" id="2013" name="2013" value="2013">
+                    <label for="2013"> 2013</label><br>
+                    <input type="checkbox" id="2012" name="2012" value="2012">
+                    <label for="2012"> 2012</label><br>
+                    <input type="checkbox" id="2011" name="2011" value="2011">
+                    <label for="2011"> 2011</label><br>
+                    <input type="checkbox" id="2010" name="2010" value="2010">
+                    <label for="2010"> 2010</label><br>
+                    <input type="checkbox" id="2009" name="2009" value="2009">
+                    <label for="2009"> 2009</label><br>
+                    <input type="checkbox" id="2008" name="2008" value="2008">
+                    <label for="2008"> 2008</label><br>
+                    <input type="checkbox" id="2007" name="2007" value="2007">
+                    <label for="2007"> 2007</label><br>
+                    <input type="checkbox" id="2006" name="2006" value="2006">
+                    <label for="2006"> 2006</label><br>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {##}
+    {#{{ html | safe }}#}
+{% endblock %}

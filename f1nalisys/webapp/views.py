@@ -88,6 +88,9 @@ def tracks(request):
     return render(request, 'tracks.html', tparams)
 
 
+def fan(request):
+    return render(request, 'fan.html')
+
 def standings2(request, ano):
     queryRace = "xquery <root>{for $c in collection('f1')//RaceTable return <elem> {$c/RaceName} {$c/Circuit/CircuitName} {$c/Location/Country}  </elem>}</root> "
     queryResults = "xquery <root>{for $c in collection('f1')//Driver return <elem> {$c/Result/Driver} {$c/Circuit/CircuitName} {$c/Location/Country}  </elem>}</root> "
@@ -376,3 +379,5 @@ def change(stringz):
     result = re.search('<MRData(.*)>', str2)
     str3 = str2.replace(result.group(1), '')
     return str3
+
+def insert

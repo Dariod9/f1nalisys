@@ -433,6 +433,11 @@ a:hover {
   border-radius: .3rem;
 }
 
+@font-face {
+  font-family: formula1;
+  src: url("Formula1-Bold.ttf");
+}
+
 /*--------------------------------------------------------------
 # Nav Bar
 --------------------------------------------------------------*/
@@ -1232,6 +1237,7 @@ a:hover {
     font-size: 1.9rem;
   }
 }
+
 
 .blog-wrapper .post-meta {
   margin: 1rem 0;

@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
     path('about/', views.about, name="about"),
+    path('fanzone/', views.fan, name="fan"),
     path('<int:ano>', views.ano),
     path('season', views.ano, name="season"),
     path('season/<int:ano>/', views.ano),
