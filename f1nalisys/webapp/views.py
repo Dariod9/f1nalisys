@@ -264,6 +264,7 @@ def index(request):
     session.execute("open f1")
     try:
         session.execute("delete RSS")
+        session.execute("delete rssf1.xml")
         print(session.info())
         # add document
 
