@@ -10,6 +10,13 @@ session.execute("open f1")
 # Create your views here.
 
 
+def fan(request):
+
+    tparams = {
+
+    }
+    return render(request, 'fan.html', tparams)
+
 def teams2(request):
     query = "xquery <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root> "
     # dá erro: nao encontra o local. Não sei em que pasta guardar os queries com as funçoes para chamar aqui
@@ -32,7 +39,7 @@ def teams2(request):
 
 
 # teams com xslt
-def teams(request, ano="2013"):
+def teams(request, ano="2020"):
     query = "xquery for $c in collection('f1')//ConstructorTable where $c/@season=" + str(ano) + " return $c"
     exe = session.execute(query)
 
@@ -135,7 +142,7 @@ def constructors_standings(request, ano):
     return render(request, 'constructors_standings.html', tparams)
 
 
-def drivers(request, ano="2010"):
+def drivers(request, ano="2020"):
     query = "xquery for $p in collection('f1')//DriverTable where $p/@season=" + str(ano) + " return $p"
     exe = session.execute(query)
 
@@ -160,17 +167,24 @@ def drivers(request, ano="2010"):
     return render(request, 'drivers.html', tparams)
 
 def getDrivers(ano):
-    response = requests.get("http://ergast.com/api/f1/" + ano + "/drivers", verify=False)
+    response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/drivers", verify=False)
     resposta = response.text
     res2 = change(resposta)
 
-    session.add(ano + "/" + ano + "_drivers", res2)
+    session.add(str(ano) + "/" + str(ano) + "_drivers", res2)
 
 def getTeams(ano):
-        response = requests.get("http://ergast.com/api/f1/" + ano + "/constructors", verify=False)
+        response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/constructors", verify=False)
         resposta = response.text
         res2 = change(resposta)
-        session.add(ano + "/" + ano + "_constructors", res2)
+        session.add(str(ano) + "/" + str(ano) + "_constructors", res2)
+
+
+def getRace(ano, corrida):
+    response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/"+str(corrida)+"/results", verify=False)
+    resposta = response.text
+    res2 = change(resposta)
+    session.add(str(ano) + "/" + str(ano) + "_"+str(corrida), res2)
 
 def about(request):
     return render(request, 'about.html', {'title': 'About'})
