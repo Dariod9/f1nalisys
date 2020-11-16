@@ -7,15 +7,16 @@ from lxml import etree
 session = BaseXClient.Session('localhost', 1984, 'admin', 'admin')
 session.execute("open f1")
 
+
 # Create your views here.
 
 
 def fan(request):
-
     tparams = {
 
     }
     return render(request, 'fan.html', tparams)
+
 
 def teams2(request):
     query = "xquery <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root> "
@@ -43,10 +44,9 @@ def teams(request, ano="2020"):
     query = "xquery for $c in collection('f1')//ConstructorTable where $c/@season=" + str(ano) + " return $c"
     exe = session.execute(query)
 
-    if(exe == ""):
+    if (exe == ""):
         getTeams(ano)
         return teams(request, ano)
-
 
     print(exe)
     root = etree.fromstring(exe)
@@ -77,7 +77,7 @@ def tracks(request):
     info = dict()
     for t in output['root']['elem']:
         info[t['CircuitName']] = (
-        t['Location']['Locality'], t['Location']['Country'], getImagem(t['Location']['Country']))
+            t['Location']['Locality'], t['Location']['Country'], getImagem(t['Location']['Country']))
 
     print(info)
     tparams = {
@@ -104,7 +104,7 @@ def standings2(request, ano):
     info = dict()
     for t in output['root']['elem']:
         info[t['CircuitName']] = (
-        t['Location']['Locality'], t['Location']['Country'], getImagem(t['Location']['Country']))
+            t['Location']['Locality'], t['Location']['Country'], getImagem(t['Location']['Country']))
 
     print(info)
     tparams = {
@@ -115,7 +115,8 @@ def standings2(request, ano):
 
 
 def drivers_standings(request, ano):
-    query = "xquery for $c in collection('f1')//StandingsTable where $c/@season=" + str(ano) + " where $c//child::DriverStanding return $c"
+    query = "xquery for $c in collection('f1')//StandingsTable where $c/@season=" + str(
+        ano) + " where $c//child::DriverStanding return $c"
     exe = session.execute(query)
     root = etree.fromstring(exe)
 
@@ -131,7 +132,8 @@ def drivers_standings(request, ano):
 
 
 def constructors_standings(request, ano):
-    query = "xquery for $c in collection('f1')//StandingsTable where $c/@season=" + str(ano) + " where $c//child::ConstructorStanding return $c"
+    query = "xquery for $c in collection('f1')//StandingsTable where $c/@season=" + str(
+        ano) + " where $c//child::ConstructorStanding return $c"
     exe = session.execute(query)
     root = etree.fromstring(exe)
 
@@ -147,8 +149,13 @@ def constructors_standings(request, ano):
 
 
 def race_results(request, ano, round):
-    query = "xquery for $c in collection('f1')//RaceTable where $c/@season='2020' where $c/@round=" + str(round) + " where $c//child::ResultsList return $c"
+    query = "xquery for $c in collection('f1')//RaceTable where $c/@season=" + str(ano) + " where $c/@round=" + str(
+        round) + " where $c//child::ResultsList return $c"
     exe = session.execute(query)
+    if (exe == ""):
+        getRace(ano, round)
+        return race_results(request, ano, round)
+
     root = etree.fromstring(exe)
 
     xsl_file = etree.parse("webapp/xsl_files/race_results.xsl")
@@ -176,7 +183,6 @@ def drivers(request, ano="2020"):
     transform = etree.XSLT(xsl_file)
     drivers_html = transform(root)
 
-
     tparams = {
         'urll': "/drivers",
         'ano': ano,
@@ -185,6 +191,63 @@ def drivers(request, ano="2020"):
     }
 
     return render(request, 'drivers.html', tparams)
+
+
+def getSeason(ano):
+    anoDef = ano
+    response = requests.get("http://ergast.com/api/f1/20" + str(anoDef) + "/0", verify=False)
+    resposta = change(response.text)
+    res2 = change(resposta)
+
+    session.add(str(ano) + "/" + str(ano) + "_0", res2)
+
+    response2 = requests.get("http://ergast.com/api/f1/20" + str(anoDef) + "/drivers", verify=False)
+    resposta = change(response2.text)
+    res2 = change(resposta)
+
+    session.add(str(ano) + "/" + str(ano) + "_drivers", res2)
+
+    response = requests.get("http://ergast.com/api/f1/20" + str(anoDef) + "/constructors", verify=False)
+    resposta = change(response.text)
+    res2 = change(resposta)
+
+    session.add(str(ano) + "/" + str(ano) + "_constructors", res2)
+
+    response = requests.get("http://ergast.com/api/f1/20" + str(anoDef) + "/circuits", verify=False)
+    resposta = change(response.text)
+    res2 = change(resposta)
+
+    session.add(str(ano) + "/" + str(ano) + "_circuits", res2)
+
+    response = requests.get("http://ergast.com/api/f1/20" + str(anoDef) + "/2/results", verify=False)
+    resposta = change(response.text)
+    res2 = change(resposta)
+
+    session.add(str(ano) + "/" + str(ano) + "_race2", res2)
+
+    response = requests.get("http://ergast.com/api/f1/20" + str(anoDef) + "/1/results", verify=False)
+    resposta = change(response.text)
+    res2 = change(resposta)
+
+    session.add(str(ano) + "/" + str(ano) + "_race1", res2)
+
+    response = requests.get("http://ergast.com/api/f1/20" + str(anoDef) + "/3/results", verify=False)
+    resposta = change(response.text)
+    res2 = change(resposta)
+
+    session.add(str(ano) + "/" + str(ano) + "_race3", res2)
+
+    response = requests.get("http://ergast.com/api/f1/20" + str(anoDef) + "/driverStandings", verify=False)
+    resposta = change(response.text)
+    res2 = change(resposta)
+
+    session.add(str(ano) + "/" + str(ano) + "_driverStandings", res2)
+
+    response = requests.get("http://ergast.com/api/f1/20" + str(anoDef) + "/constructorStandings", verify=False)
+    resposta = change(response.text)
+    res2 = change(resposta)
+
+    session.add(str(ano) + "/" + str(ano) + "_constructorStandings", res2)
 
 
 def getDrivers(ano):
@@ -196,27 +259,37 @@ def getDrivers(ano):
 
 
 def getTeams(ano):
-        response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/constructors", verify=False)
-        resposta = response.text
-        res2 = change(resposta)
-        session.add(str(ano) + "/" + str(ano) + "_constructors", res2)
+    response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/constructors", verify=False)
+    resposta = response.text
+    res2 = change(resposta)
+    session.add(str(ano) + "/" + str(ano) + "_constructors", res2)
 
 
 def getRace(ano, corrida):
-    response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/"+str(corrida)+"/results", verify=False)
+    response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/" + str(corrida) + "/results", verify=False)
     resposta = response.text
     res2 = change(resposta)
-    session.add(str(ano) + "/" + str(ano) + "_"+str(corrida), res2)
+    session.add(str(ano) + "/" + str(ano) + "_" + str(corrida), res2)
 
 
 def about(request):
     return render(request, 'about.html', {'title': 'About'})
 
 
-def ano(request, ano="2020"):
+def season(request, ano="2020"):
     # races
-    races_query = "xquery <Races>{ for $a in collection('f1')//RaceTable where $a/@season = " + str(ano) + " return $a/Race }</Races>"
+    races_query = "xquery <Races>{ for $a in collection('f1')//RaceTable where $a/@season = " + str(
+        ano) + " return $a/Race }</Races>"
     exe = session.execute(races_query)
+    if (len(exe) < 10):
+        print("RACES: _____")
+
+        response = requests.get("http://ergast.com/api/f1/" + str(ano), verify=False)
+        resposta = response.text
+        res2 = change(resposta)
+        session.add(str(ano) + "/" + str(ano) + "_0", res2)
+        return season(request, ano)
+
     root = etree.fromstring(exe)
 
     xsl_file = etree.parse('webapp/xsl_files/races_overview.xsl')
@@ -227,6 +300,16 @@ def ano(request, ano="2020"):
     top3drivers_query = "xquery <root>{ for $c in collection('f1')//StandingsTable where $c/@season=" + str(
         ano) + " return $c//DriverStanding[position() < 4] }</root>"
     exe_drivers = session.execute(top3drivers_query)
+
+    if(len(exe_drivers) < 10):
+        print("DRIVER: _____")
+
+        response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/driverStandings", verify=False)
+        resposta = response.text
+        res2 = change(resposta)
+        session.add(str(ano) + "/" + str(ano) + "_driverStandings", res2)
+        return season(request, ano)
+
     root_drivers = etree.fromstring(exe_drivers)
 
     xsl_file_drivers = etree.parse('webapp/xsl_files/top3drivers.xsl')
@@ -237,6 +320,15 @@ def ano(request, ano="2020"):
     top3teams_query = "xquery <root>{ for $c in collection('f1')//StandingsTable where $c/@season=" + str(
         ano) + " return $c//ConstructorStanding[position() < 4] }</root>"
     exe_teams = session.execute(top3teams_query)
+
+    if(len(exe_teams)<20):
+        print("STANDINGS: _____")
+        response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/constructorStandings", verify=False)
+        resposta = response.text
+        res2 = change(resposta)
+        session.add(str(ano) + "/" + str(ano) + "constructorStandings", res2)
+        return season(request, ano)
+
     root_teams = etree.fromstring(exe_teams)
 
     xsl_file_teams = etree.parse('webapp/xsl_files/top3teams.xsl')
@@ -396,9 +488,8 @@ def getFlag(pais):
 
 
 def change(stringz):
-    #str1 = stringz.replace("utf-8", "iso-8859-1")
+    # str1 = stringz.replace("utf-8", "iso-8859-1")
     str2 = stringz.replace('<?xml-stylesheet type="text/xsl" href="/schemas/mrd-1.4.xsl"?>', '')
     result = re.search('<MRData(.*)>', str2)
     str3 = str2.replace(result.group(1), '')
     return str3
-
