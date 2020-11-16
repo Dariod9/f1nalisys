@@ -32,4 +32,5 @@ urlpatterns = [
     path('tracks', views.tracks, name="tracks"),
     path('season/<int:ano>/drivers_standings', views.drivers_standings, name="drivers_standings"),
     path('season/<int:ano>/constructors_standings', views.constructors_standings, name="constructors_standings"),
+    path('season/<int:ano>/round/<int:round>', views.race_results, name="race_results")
 ]

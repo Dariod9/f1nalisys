@@ -45,11 +45,24 @@
                             <p class="card-text">
                                 <xsl:value-of select="Date"></xsl:value-of>
                             </p>
-                            <a href="#" class="btn btn-info btn-sm">Standings</a>
+
+                            <xsl:variable name="season" select="@season"></xsl:variable>
+                            <xsl:variable name="round" select="@round"></xsl:variable>
+
+
+                            <a class="btn btn-info btn-sm">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="'/season/'"></xsl:value-of>
+                                    <xsl:value-of select="$season"></xsl:value-of>
+                                    <xsl:value-of select="'/round/'"></xsl:value-of>
+                                    <xsl:value-of select="$round"></xsl:value-of>
+                                </xsl:attribute>
+                                Standings
+                            </a>
                         </div>
                     </div>
                 </div>
-            </xsl:for-each>
+                </xsl:for-each>
             </div>
         </div>
 

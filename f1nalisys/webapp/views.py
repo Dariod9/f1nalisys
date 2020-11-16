@@ -91,6 +91,7 @@ def tracks(request):
 def fan(request):
     return render(request, 'fan.html')
 
+
 def standings2(request, ano):
     queryRace = "xquery <root>{for $c in collection('f1')//RaceTable return <elem> {$c/RaceName} {$c/Circuit/CircuitName} {$c/Location/Country}  </elem>}</root> "
     queryResults = "xquery <root>{for $c in collection('f1')//Driver return <elem> {$c/Result/Driver} {$c/Circuit/CircuitName} {$c/Location/Country}  </elem>}</root> "
@@ -145,6 +146,22 @@ def constructors_standings(request, ano):
     return render(request, 'constructors_standings.html', tparams)
 
 
+def race_results(request, ano, round):
+    query = "xquery for $c in collection('f1')//RaceTable where $c/@season='2020' where $c/@round=" + str(round) + " where $c//child::ResultsList return $c"
+    exe = session.execute(query)
+    root = etree.fromstring(exe)
+
+    xsl_file = etree.parse("webapp/xsl_files/race_results.xsl")
+    tranform = etree.XSLT(xsl_file)
+    html = tranform(root)
+
+    tparams = {
+        'title': 'race results',
+        'results': html,
+    }
+    return render(request, 'race_results.html', tparams)
+
+
 def drivers(request, ano="2020"):
     query = "xquery for $p in collection('f1')//DriverTable where $p/@season=" + str(ano) + " return $p"
     exe = session.execute(query)
@@ -169,12 +186,14 @@ def drivers(request, ano="2020"):
 
     return render(request, 'drivers.html', tparams)
 
+
 def getDrivers(ano):
     response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/drivers", verify=False)
     resposta = response.text
     res2 = change(resposta)
 
     session.add(str(ano) + "/" + str(ano) + "_drivers", res2)
+
 
 def getTeams(ano):
         response = requests.get("http://ergast.com/api/f1/" + str(ano) + "/constructors", verify=False)
@@ -188,6 +207,7 @@ def getRace(ano, corrida):
     resposta = response.text
     res2 = change(resposta)
     session.add(str(ano) + "/" + str(ano) + "_"+str(corrida), res2)
+
 
 def about(request):
     return render(request, 'about.html', {'title': 'About'})
@@ -360,6 +380,7 @@ def getImagem(pais):
 
     return path
 
+
 def getFlag(pais):
     path = "/static/img/"
     if pais == "Dutch" or pais == "Netherlands":
@@ -373,6 +394,7 @@ def getFlag(pais):
     elif pais == "French" or pais == "France":
         path = path + "fraflag.png"
 
+
 def change(stringz):
     #str1 = stringz.replace("utf-8", "iso-8859-1")
     str2 = stringz.replace('<?xml-stylesheet type="text/xsl" href="/schemas/mrd-1.4.xsl"?>', '')
@@ -380,4 +402,3 @@ def change(stringz):
     str3 = str2.replace(result.group(1), '')
     return str3
 
-def insert
