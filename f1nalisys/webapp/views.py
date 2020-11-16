@@ -17,32 +17,12 @@ def fan(request):
     }
     return render(request, 'fan.html', tparams)
 
-
-def teams2(request):
-    query = "xquery <root>{for $c in collection('f1')//Constructor return <elem> {$c/Name} {$c/Nationality} </elem>}</root> "
-    # dá erro: nao encontra o local. Não sei em que pasta guardar os queries com as funçoes para chamar aqui
-    # query = "xquery <root>{ local:get-constructors() }</root>"
-    exe = session.execute(query)
-
-    output = xmltodict.parse(exe)
-    print("out: ", output)
-
-    info = dict()
-    for t in output['root']['elem']:
-        info[t['Name']] = t['Nationality']
-
-    tparams = {
-        'title': 'teams',
-        'teams': info,
-    }
-
-    return render(request, 'teams.html', tparams)
-
-
 # teams com xslt
 def teams(request, ano="2020"):
-    query = "xquery for $c in collection('f1')//ConstructorTable where $c/@season=" + str(ano) + " return $c"
-    exe = session.execute(query)
+    queryText = "declare variable $ano external; for $c in collection('f1')//ConstructorTable where $c/@season=$ano return $c"
+    query= session.query(queryText)
+    query.bind("$ano", str(ano))
+    exe = query.execute()
 
     if (exe == ""):
         getTeams(ano)
@@ -91,33 +71,11 @@ def tracks(request):
 def fan(request):
     return render(request, 'fan.html')
 
-
-def standings2(request, ano):
-    queryRace = "xquery <root>{for $c in collection('f1')//RaceTable return <elem> {$c/RaceName} {$c/Circuit/CircuitName} {$c/Location/Country}  </elem>}</root> "
-    queryResults = "xquery <root>{for $c in collection('f1')//Driver return <elem> {$c/Result/Driver} {$c/Circuit/CircuitName} {$c/Location/Country}  </elem>}</root> "
-
-    exe = session.execute(queryRace)
-
-    output = xmltodict.parse(exe)
-    print("out: ", output)
-
-    info = dict()
-    for t in output['root']['elem']:
-        info[t['CircuitName']] = (
-            t['Location']['Locality'], t['Location']['Country'], getImagem(t['Location']['Country']))
-
-    print(info)
-    tparams = {
-        'title': 'Tracks',
-        'tracklist': info,
-    }
-    return render(request, 'tracks.html', tparams)
-
-
 def drivers_standings(request, ano):
-    query = "xquery for $c in collection('f1')//StandingsTable where $c/@season=" + str(
-        ano) + " where $c//child::DriverStanding return $c"
-    exe = session.execute(query)
+    queryText = "declare variable $ano external; for $c in collection('f1')//StandingsTable where $c/@season=$ano where $c//child::DriverStanding return $c"
+    query= session.query(queryText)
+    query.bind("$ano", str(ano))
+    exe = query.execute()
     root = etree.fromstring(exe)
 
     xsl_file = etree.parse("webapp/xsl_files/drivers-standings.xsl")
@@ -132,9 +90,11 @@ def drivers_standings(request, ano):
 
 
 def constructors_standings(request, ano):
-    query = "xquery for $c in collection('f1')//StandingsTable where $c/@season=" + str(
+    queryText = "declare variable $ano external; for $c in collection('f1')//StandingsTable where $c/@season=" + str(
         ano) + " where $c//child::ConstructorStanding return $c"
-    exe = session.execute(query)
+    query=session.query(queryText)
+    query.bind("$ano", str(ano))
+    exe = query.execute()
     root = etree.fromstring(exe)
 
     xsl_file = etree.parse("webapp/xsl_files/constructors-standings.xsl")
@@ -149,9 +109,12 @@ def constructors_standings(request, ano):
 
 
 def race_results(request, ano, round):
-    query = "xquery for $c in collection('f1')//RaceTable where $c/@season=" + str(ano) + " where $c/@round=" + str(
-        round) + " where $c//child::ResultsList return $c"
-    exe = session.execute(query)
+    queryText = "declare variable $ano external; declare variable $round external; for $c in collection('f1')//RaceTable where $c/@season=$ano where $c/@round=$round where $c//child::ResultsList return $c"
+    query=session.query(queryText)
+    query.bind("$ano", str(ano))
+    query.bind("$round", str(round))
+    exe = query.execute()
+
     if (exe == ""):
         getRace(ano, round)
         return race_results(request, ano, round)
@@ -170,8 +133,10 @@ def race_results(request, ano, round):
 
 
 def drivers(request, ano="2020"):
-    query = "xquery for $p in collection('f1')//DriverTable where $p/@season=" + str(ano) + " return $p"
-    exe = session.execute(query)
+    queryText = "declare variable $ano external; for $p in collection('f1')//DriverTable where $p/@season=$ano return $p"
+    query=session.query(queryText)
+    query.bind("$ano", str(ano))
+    exe = query.execute()
 
     if (exe == ""):
         getDrivers(ano)
@@ -278,7 +243,7 @@ def about(request):
 
 def season(request, ano="2020"):
     # races
-    races_query = "xquery <Races>{ for $a in collection('f1')//RaceTable where $a/@season = " + str(
+    races_query = "xquery <Races>{ for $a in collection('f1')//RaceTable[not(descendant::ResultsList)] where $a/@season = " + str(
         ano) + " return $a/Race }</Races>"
     exe = session.execute(races_query)
     if (len(exe) < 10):
