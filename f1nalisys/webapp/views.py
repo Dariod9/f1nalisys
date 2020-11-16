@@ -242,6 +242,27 @@ def about(request):
 
 
 def season(request, ano="2020"):
+
+    #add comment
+    if 'new_title' in request.POST and 'new_text' in request.POST:
+        title = request.POST['new_title']
+        text = request.POST['new_text']
+        if title and text:
+            print(title, text)
+            input_query = ' for $c in collection("f1")//Comments where $c/@season="'+str(ano)+'" return insert node <Comment season="'+str(ano)+'"> <Title>'+ title +'</Title> <Texto>' + text + '</Texto> </Comment> into $c '
+            query = session.query(input_query)
+            query.execute()
+
+    if 'comment_title' in request.POST and 'comment_text' in request.POST:
+        print("erfwerfwer")
+        title = request.POST['comment_title']
+        text = request.POST['comment_text']
+        if title and text:
+            print(title, text)
+            input_query = ' for $c in collection("f1")//Comments where $c/@season="'+str(ano)+'" return insert node <Comment season="'+str(ano)+'"> <Title>'+ title +'</Title> <Texto>' + text + '</Texto> </Comment> into $c '
+            query = session.query(input_query)
+            query.execute()
+
     # races
     races_query = "xquery <Races>{ for $a in collection('f1')//RaceTable[not(descendant::ResultsList)] where $a/@season = " + str(
         ano) + " return $a/Race }</Races>"
@@ -300,8 +321,38 @@ def season(request, ano="2020"):
     tranform_teams = etree.XSLT(xsl_file_teams)
     teams_snippet = tranform_teams(root_teams)
 
+    # comments
+    query = "xquery <root>{for $c in collection('f1')//Comments where $c/@season=" + str(ano) + " return $c }</root>"
+    exe = session.execute(query)
+    output = xmltodict.parse(exe)
+    print(output['root'] == None)
+    if output['root'] == None:
+        input_query = ' let $c := collection("f1")/CommentsGroup return insert node <Comments season="' + str(
+            ano) + '"></Comments> into $c '
+        query = session.query(input_query)
+        query.execute()
+        query = "xquery <root>{for $c in collection('f1')//Comments where $c/@season=" + str(
+            ano) + " return $c }</root>"
+        exe = session.execute(query)
+        output = xmltodict.parse(exe)
+
+    info = []
+    print(output['root']['Comments'])
+    if 'Comment' in output['root']['Comments']:
+        print("out: ", output['root']['Comments']['Comment'])
+        print(len(output['root']['Comments']['Comment']))
+        print(isinstance(output['root']['Comments']['Comment'], list))
+        if isinstance(output['root']['Comments']['Comment'], list) and len(output['root']['Comments']['Comment']) > 1:
+            for t in output['root']['Comments']['Comment']:
+                print(t)
+                info += [[t['Title'], t['Texto']]]
+        else:
+            info = [[output['root']['Comments']['Comment']['Title'], output['root']['Comments']['Comment']['Texto']]]
+    print(info)
+
     tparams = {
         'urll': "/season",
+        'info': info,
         'ano': ano,
         'drivers_standings_url': "/season/" + str(ano),
         'constructors_standings_url': "/season/" + str(ano),
@@ -311,6 +362,15 @@ def season(request, ano="2020"):
         'teams_snippet': teams_snippet,
     }
     return render(request, 'ano.html', tparams)
+
+def delete_comment(request, ano, title, text):
+        if title and text:
+            print(title, text)
+            input_query = ' for $c in collection("f1")//Comment where $c/@season="' + str(
+                ano) + '" and $c/Title="' + title + '" and $c/Texto="' + text + '" return delete node $c '
+            query = session.query(input_query)
+            query.execute()
+        return season(request, str(ano))
 
 
 def index(request):

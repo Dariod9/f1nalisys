@@ -1,3 +1,5 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% extends "base2.html" %}
 {% block content %}
                 <h1> Season {{ ano }} </h1>
@@ -26,6 +28,47 @@
 
                     </div>
 
+                </div>
+
+                <h2>Comments</h2>
+                {% for ar in info %}
+                    <div class="col mb-3">
+                    <div class="card">
+
+                      <div class="card-body">
+                            {% csrf_token %}
+                            <h5 class="card-title">
+                                <a target="_blank" name="comment_title" style="color:rgb(255,0,0);">
+                                    {{ ar.0 }}
+                                </a>
+                                <a type="button" href="{% url 'season' %}/{{ ano }}/{{ ar.0 }}/{{ ar.1 }}" style="border:1px transparent; background-color: transparent; float: right;">
+                                <i style="font-size:24px" class="fa">&#xf014;</i></a>
+                            </h5>
+                            <p class="card-text" name="comment_text"> {{ ar.1 }} </p>
+                      </div>
+                    </div>
+                    </div>
+                {% endfor %}
+
+                <h5>Add a new comment</h5>
+                <div class="row row-cols-1">
+                    <div class="col mb-3">
+                        <div class="card">
+                          <div class="card-body">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                              <div class="form-group">
+                                <h6>Title</h6>
+                                <input type="text" class="form-control" name="new_title" aria-describedby="emailHelp" placeholder="Write your comment's title">
+                              </div>
+                              <div class="form-group">
+                                <h6>Comment</h6>
+                                <textarea type="text" class="form-control" name="new_text" placeholder="Write your comment"></textarea>
+                              </div>
+                                <input type="submit" class="btn btn-info btn-sm" value="Enviar"/>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
 {% endblock %}
