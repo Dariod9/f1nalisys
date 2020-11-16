@@ -9,11 +9,18 @@
                 <xsl:value-of select="//Race[last()]/@round"></xsl:value-of>
                 Rounds
             </h5>
+
             <div class="row row-cols-1 row-cols-md-2">
-                <xsl:for-each select="/Races/Race">
+                <xsl:apply-templates></xsl:apply-templates>
+            </div>
+        </div>
+
+    </xsl:template>
+
+
+    <xsl:template match="/Races/Race">
                 <div class="col mb-4">
                     <div class="card">
-
                         <div class="card-header">
                             <b class="card-title">
                                 <a target="_blank" style="color:rgb(255,0,0);">
@@ -62,9 +69,7 @@
                         </div>
                     </div>
                 </div>
-                </xsl:for-each>
-            </div>
-        </div>
 
     </xsl:template>
+
 </xsl:stylesheet>

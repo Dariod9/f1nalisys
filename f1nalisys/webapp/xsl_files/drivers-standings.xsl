@@ -20,33 +20,36 @@
                 </tr>
             </thead>
             <tbody>
-                <xsl:for-each select="//DriverStanding">
-                    <tr>
-                        <th scope="row">
-                            <xsl:value-of select="@position"></xsl:value-of>
-                        </th>
-                        <td>
-                            <xsl:value-of select="Driver/@code"></xsl:value-of>
-                        </td>
-                        <td>
-                            <xsl:value-of select="Driver/GivenName"></xsl:value-of>
-                            &#160;
-                            <xsl:value-of select="Driver/FamilyName"></xsl:value-of>
-                        </td>
-                        <td>
-                            <xsl:value-of select="Constructor/Name"></xsl:value-of>
-                        </td>
-                        <td>
-                            <xsl:value-of select="@wins"></xsl:value-of>
-                        </td>
-                        <td>
-                            <xsl:value-of select="@points"></xsl:value-of>
-                        </td>
-
-                    </tr>
-                </xsl:for-each>
+                <xsl:apply-templates match="DriverStanding"></xsl:apply-templates>
             </tbody>
             </table>
 
     </xsl:template>
+
+    <xsl:template match="DriverStanding">
+        <tr>
+            <th scope="row">
+                <xsl:value-of select="@position"></xsl:value-of>
+            </th>
+            <td>
+                <xsl:value-of select="Driver/@code"></xsl:value-of>
+            </td>
+            <td>
+                <xsl:value-of select="Driver/GivenName"></xsl:value-of>
+                &#160;
+                <xsl:value-of select="Driver/FamilyName"></xsl:value-of>
+            </td>
+            <td>
+                <xsl:value-of select="Constructor/Name"></xsl:value-of>
+            </td>
+            <td>
+                <xsl:value-of select="@wins"></xsl:value-of>
+            </td>
+            <td>
+                <xsl:value-of select="@points"></xsl:value-of>
+            </td>
+
+        </tr>
+    </xsl:template>
+
 </xsl:stylesheet>
