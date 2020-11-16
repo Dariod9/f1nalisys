@@ -19,8 +19,8 @@ def fan(request):
 
 # teams com xslt
 def teams(request, ano="2020"):
-    queryText = "declare variable $ano external; for $c in collection('f1')//ConstructorTable where $c/@season=$ano return $c"
-    query= session.query(queryText)
+    queryText="import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:constructors($ano)"
+    query = session.query(queryText)
     query.bind("$ano", str(ano))
     exe = query.execute()
 
@@ -46,10 +46,11 @@ def teams(request, ano="2020"):
 
 
 def tracks(request):
-    query = "xquery <root>{for $c in collection('f1')//Circuit return <elem> {$c/CircuitName} {$c/Location} </elem>}</root> "
+    query = " import module namespace f1_methods = 'com.f1'; f1_methods:tracks() "
+    queryT=session.query(query)
     # dá erro: nao encontra o local. Não sei em que pasta guardar os queries com as funçoes para chamar aqui
     # query = "xquery <root>{ local:get-constructors() }</root>"
-    exe = session.execute(query)
+    exe = queryT.execute()
 
     output = xmltodict.parse(exe)
     print("out: ", output)
@@ -72,7 +73,7 @@ def fan(request):
     return render(request, 'fan.html')
 
 def drivers_standings(request, ano):
-    queryText = "declare variable $ano external; for $c in collection('f1')//StandingsTable where $c/@season=$ano where $c//child::DriverStanding return $c"
+    queryText = "import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:driver_standings($ano)"
     query= session.query(queryText)
     query.bind("$ano", str(ano))
     exe = query.execute()
@@ -90,8 +91,7 @@ def drivers_standings(request, ano):
 
 
 def constructors_standings(request, ano):
-    queryText = "declare variable $ano external; for $c in collection('f1')//StandingsTable where $c/@season=" + str(
-        ano) + " where $c//child::ConstructorStanding return $c"
+    queryText = "import module namespace f1_methods = 'com.f1'; declare variable $ano external;f1_methods:team_standings($ano)"
     query=session.query(queryText)
     query.bind("$ano", str(ano))
     exe = query.execute()
@@ -109,7 +109,7 @@ def constructors_standings(request, ano):
 
 
 def race_results(request, ano, round):
-    queryText = "declare variable $ano external; declare variable $round external; for $c in collection('f1')//RaceTable where $c/@season=$ano where $c/@round=$round where $c//child::ResultsList return $c"
+    queryText = "import module namespace f1_methods = 'com.f1'; declare variable $ano external; declare variable $round external; f1_methods:race_results($ano,$round)"
     query=session.query(queryText)
     query.bind("$ano", str(ano))
     query.bind("$round", str(round))
@@ -133,7 +133,7 @@ def race_results(request, ano, round):
 
 
 def drivers(request, ano="2020"):
-    queryText = "declare variable $ano external; for $p in collection('f1')//DriverTable where $p/@season=$ano return $p"
+    queryText = "import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:drivers($ano)"
     query=session.query(queryText)
     query.bind("$ano", str(ano))
     exe = query.execute()
@@ -264,9 +264,11 @@ def season(request, ano="2020"):
             query.execute()
 
     # races
-    races_query = "xquery <Races>{ for $a in collection('f1')//RaceTable[not(descendant::ResultsList)] where $a/@season = " + str(
-        ano) + " return $a/Race }</Races>"
-    exe = session.execute(races_query)
+    races_query= "import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:season($ano) "
+    query=session.query(races_query)
+    query.bind("$ano", str(ano))
+    exe = query.execute()
+
     if (len(exe) < 10):
         print("RACES: _____")
 
@@ -283,9 +285,10 @@ def season(request, ano="2020"):
     races_snippet = tranform(root)
 
     # top3 drivers
-    top3drivers_query = "xquery <root>{ for $c in collection('f1')//StandingsTable where $c/@season=" + str(
-        ano) + " return $c//DriverStanding[position() < 4] }</root>"
-    exe_drivers = session.execute(top3drivers_query)
+    top3drivers_query = "import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:top3_drivers($ano) "
+    query=session.query(top3drivers_query)
+    query.bind("$ano", str(ano))
+    exe_drivers = query.execute()
 
     if(len(exe_drivers) < 10):
         print("DRIVER: _____")
@@ -303,9 +306,10 @@ def season(request, ano="2020"):
     drivers_snippet = tranform_drivers(root_drivers)
 
     # top3 teams
-    top3teams_query = "xquery <root>{ for $c in collection('f1')//StandingsTable where $c/@season=" + str(
-        ano) + " return $c//ConstructorStanding[position() < 4] }</root>"
-    exe_teams = session.execute(top3teams_query)
+    top3teams_query = "import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:top3_teams($ano) "
+    query=session.query(top3teams_query)
+    query.bind("$ano", str(ano))
+    exe_teams = query.execute()
 
     if(len(exe_teams)<20):
         print("STANDINGS: _____")
@@ -420,8 +424,9 @@ def index(request):
     except IOError:
         print(session.info() + "\n ERRO MPTS")
 
-    input = "xquery <root>{ for $i in collection('f1')//item[position()<6] return <elem> {$i/title} {$i/pubDate} {$i/author} {$i/link} {$i/description} </elem>} </root>"
-    query = session.execute(input)
+    input = "import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:rss() "
+    queryT=session.query(input)
+    query = queryT.execute()
 
     info = dict()
     capa = dict()
