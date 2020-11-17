@@ -3,17 +3,16 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="/">
 
-        <div class="col-7">
-            <h2> Races </h2>
-            <h5>
-                <xsl:value-of select="//Race[last()]/@round"></xsl:value-of>
-                Rounds
-            </h5>
+        <h2> Races </h2>
+        <h5>
+            <xsl:value-of select="//Race[last()]/@round"></xsl:value-of>
+            Rounds
+        </h5>
 
-            <div class="row row-cols-1 row-cols-md-2">
-                <xsl:apply-templates></xsl:apply-templates>
-            </div>
+        <div class="row row-cols-1 row-cols-md-2">
+            <xsl:apply-templates></xsl:apply-templates>
         </div>
+
 
     </xsl:template>
 

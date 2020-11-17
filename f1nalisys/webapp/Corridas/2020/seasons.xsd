@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="MRData" type="MRDataType"/>
+  <xs:complexType name="LocationType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="Locality"/>
+      <xs:element type="xs:string" name="Country"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="lat" use="optional"/>
+    <xs:attribute type="xs:string" name="long" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="CircuitType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="CircuitName"/>
+      <xs:element type="LocationType" name="Location"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="circuitId" use="optional"/>
+    <xs:attribute type="xs:string" name="url" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="RaceType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="RaceName"/>
+      <xs:element type="CircuitType" name="Circuit"/>
+      <xs:element type="xs:string" name="Date"/>
+      <xs:element name="Time">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+              <xs:pattern value="[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z"></xs:pattern>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="season" use="optional"/>
+    <xs:attribute type="xs:string" name="round" use="optional"/>
+    <xs:attribute type="xs:string" name="url" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="RaceTableType">
+    <xs:sequence>
+      <xs:element type="RaceType" name="Race" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="season"/>
+    <xs:attribute type="xs:string" name="round"/>
+  </xs:complexType>
+  <xs:complexType name="MRDataType">
+    <xs:sequence>
+      <xs:element type="RaceTableType" name="RaceTable"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

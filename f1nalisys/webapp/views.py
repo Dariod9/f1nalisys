@@ -1,3 +1,5 @@
+import urllib
+
 import xmltodict, requests, re
 
 from BaseXClient import BaseXClient
@@ -241,14 +243,21 @@ def about(request):
     return render(request, 'about.html', {'title': 'About'})
 
 
-def season(request, ano="2020"):
+def validate(tree):
+    schema_root = etree.parse('webapp/Corridas/2020/seasons.xsd')
+    schema = etree.XMLSchema(schema_root)
+    print("Validação: " + str(schema.validate(tree)))
+    return schema.validate(tree)
 
+
+def season(request, ano="2020"):
+    error = False
     #add comment
     if 'new_title' in request.POST and 'new_text' in request.POST:
         title = request.POST['new_title']
         text = request.POST['new_text']
         if title and text:
-            print(title, text)
+            # print(title, text)
             input_query = ' for $c in collection("f1")//Comments where $c/@season="'+str(ano)+'" return insert node <Comment season="'+str(ano)+'"> <Title>'+ title +'</Title> <Texto>' + text + '</Texto> </Comment> into $c '
             query = session.query(input_query)
             query.execute()
@@ -265,20 +274,30 @@ def season(request, ano="2020"):
 
     # races
     races_query= "import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:season($ano) "
-    query=session.query(races_query)
+    query = session.query(races_query)
     query.bind("$ano", str(ano))
-    exe = query.execute()
+    exe_races = query.execute()
 
-    if (len(exe) < 10):
+    if len(exe_races) < 10:
         print("RACES: _____")
 
-        response = requests.get("http://ergast.com/api/f1/" + str(ano), verify=False)
-        resposta = response.text
-        res2 = change(resposta)
-        session.add(str(ano) + "/" + str(ano) + "_0", res2)
-        return season(request, ano)
+        # buscar o ficheiro à API
+        url = "http://ergast.com/api/f1/" + str(ano)
+        document = urllib.request.urlopen(url).read()
+        tree = etree.fromstring(document)
+        str_xml = change(etree.tostring(tree).decode("iso-8859-1"))
+        tree = etree.fromstring(str_xml)
 
-    root = etree.fromstring(exe)
+        # print("tree: ", str_xml)
+
+        # se validar o ficheiro adiciona à BD
+        if validate(tree):
+            session.add(str(ano) + "/" + str(ano) + "_0", str_xml)
+            return season(request, ano)
+        else:
+            error = True
+
+    root = etree.fromstring(exe_races)
 
     xsl_file = etree.parse('webapp/xsl_files/races_overview.xsl')
     tranform = etree.XSLT(xsl_file)
@@ -329,7 +348,7 @@ def season(request, ano="2020"):
     query = "xquery <root>{for $c in collection('f1')//Comments where $c/@season=" + str(ano) + " return $c }</root>"
     exe = session.execute(query)
     output = xmltodict.parse(exe)
-    print(output['root'] == None)
+    # print(output['root'] == None)
     if output['root'] == None:
         input_query = ' let $c := collection("f1")/CommentsGroup return insert node <Comments season="' + str(
             ano) + '"></Comments> into $c '
@@ -364,8 +383,22 @@ def season(request, ano="2020"):
         'races_snippet': races_snippet,
         'drivers_snippet': drivers_snippet,
         'teams_snippet': teams_snippet,
+        'error': error,
     }
     return render(request, 'ano.html', tparams)
+
+
+def print_tree(root, t=""):
+    if root.attrib != "":
+        info = str(root.attrib)
+    else:
+        info = t + str(root.tag) + " -> " + str(root.text) + "\n"
+
+    info = info.replace("{}", "").replace("\n", "")
+    print(info)
+    if len(root.getchildren()):
+        for child in root:
+            print_tree(child, t + "\t")
 
 def delete_comment(request, ano, title, text):
         if title and text:

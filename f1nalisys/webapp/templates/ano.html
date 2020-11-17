@@ -5,8 +5,16 @@
                 <h1> Season {{ ano }} </h1>
 
                 <div class="row">
-                    {# races #}
-                    {{ races_snippet | safe }}
+                    <div class="col-7">
+                        {% if error %}
+                            <div class="alert alert-danger" role="alert">
+                                Error: Not possible to validate races from this season.
+                            </div>
+                        {% else %}
+                            {# races #}
+                            {{ races_snippet | safe }}
+                        {% endif %}
+                    </div>
 
                     {# Div de divisao entre as outras #}
                     <div class="col-1"></div>
