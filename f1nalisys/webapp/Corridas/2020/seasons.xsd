@@ -22,7 +22,7 @@
       <xs:element type="xs:string" name="RaceName"/>
       <xs:element type="CircuitType" name="Circuit"/>
       <xs:element type="xs:string" name="Date"/>
-      <xs:element name="Time">
+      <xs:element name="Time" minOccurs="0">
         <xs:simpleType>
           <xs:restriction base="xs:string">
               <xs:pattern value="[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z"></xs:pattern>
