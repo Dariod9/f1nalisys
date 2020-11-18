@@ -74,6 +74,7 @@ def tracks(request):
 def fan(request):
     return render(request, 'fan.html')
 
+
 def drivers_standings(request, ano):
     queryText = "import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:driver_standings($ano)"
     query= session.query(queryText)
@@ -88,6 +89,7 @@ def drivers_standings(request, ano):
     tparams = {
         'title': 'Drivers Standings',
         'standings': html,
+        'ano': ano,
     }
     return render(request, 'drivers_standings.html', tparams)
 
@@ -106,6 +108,7 @@ def constructors_standings(request, ano):
     tparams = {
         'title': 'Constructors Standings',
         'standings': html,
+        'ano': ano,
     }
     return render(request, 'constructors_standings.html', tparams)
 
@@ -130,6 +133,7 @@ def race_results(request, ano, round):
     tparams = {
         'title': 'race results',
         'results': html,
+        'ano': ano,
     }
     return render(request, 'race_results.html', tparams)
 
