@@ -276,6 +276,8 @@ def season(request, ano="2020"):
                 query.execute()
             else:
                 error2 = True
+        else:
+            error2 = True
 
     # races
     races_query= "import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:season($ano) "
