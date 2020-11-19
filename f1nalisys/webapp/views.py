@@ -256,25 +256,26 @@ def validate(tree):
 
 def season(request, ano="2020"):
     error = False
-    #add comment
+    error2=False
     if 'new_title' in request.POST and 'new_text' in request.POST:
         title = request.POST['new_title']
         text = request.POST['new_text']
         if title and text:
-            # print(title, text)
-            input_query = ' for $c in collection("f1")//Comments where $c/@season="'+str(ano)+'" return insert node <Comment season="'+str(ano)+'"> <Title>'+ title +'</Title> <Texto>' + text + '</Texto> </Comment> into $c '
+            node = '<Comment season="' + str(
+                ano) + '"> <Title>' + title + '</Title> <Texto>' + text + '</Texto> </Comment>'
+            input_query = ' for $c in collection("f1")//Comments where $c/@season="' + str(
+                ano) + '" return insert node ' + node + ' into $c '
             query = session.query(input_query)
-            query.execute()
-
-    if 'comment_title' in request.POST and 'comment_text' in request.POST:
-        print("erfwerfwer")
-        title = request.POST['comment_title']
-        text = request.POST['comment_text']
-        if title and text:
-            print(title, text)
-            input_query = ' for $c in collection("f1")//Comments where $c/@season="'+str(ano)+'" return insert node <Comment season="'+str(ano)+'"> <Title>'+ title +'</Title> <Texto>' + text + '</Texto> </Comment> into $c '
-            query = session.query(input_query)
-            query.execute()
+            nnode = '<curso xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:noNamespaceSchemaLocation="comment_validator.xsd"> ' + node
+            tree = etree.fromstring(node)
+            schema_root = etree.parse('webapp/Corridas/comment_validator.xsd')
+            schema = etree.XMLSchema(schema_root)
+            valido = schema.validate(tree)
+            print("Validação: " + str(valido))
+            if valido:
+                query.execute()
+            else:
+                error2 = True
 
     # races
     races_query= "import module namespace f1_methods = 'com.f1'; declare variable $ano external; f1_methods:season($ano) "
@@ -364,18 +365,13 @@ def season(request, ano="2020"):
         output = xmltodict.parse(exe)
 
     info = []
-    print(output['root']['Comments'])
     if 'Comment' in output['root']['Comments']:
-        print("out: ", output['root']['Comments']['Comment'])
-        print(len(output['root']['Comments']['Comment']))
-        print(isinstance(output['root']['Comments']['Comment'], list))
         if isinstance(output['root']['Comments']['Comment'], list) and len(output['root']['Comments']['Comment']) > 1:
             for t in output['root']['Comments']['Comment']:
                 print(t)
                 info += [[t['Title'], t['Texto']]]
         else:
             info = [[output['root']['Comments']['Comment']['Title'], output['root']['Comments']['Comment']['Texto']]]
-    print(info)
 
     tparams = {
         'urll': "/season",
@@ -388,6 +384,7 @@ def season(request, ano="2020"):
         'drivers_snippet': drivers_snippet,
         'teams_snippet': teams_snippet,
         'error': error,
+        'error2': error2,
     }
     return render(request, 'ano.html', tparams)
 
